@@ -1,0 +1,556 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--bg-app);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.segments {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.segment {
+  width: 28px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--surface-3);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.segmentDone {
+  background: var(--text-2);
+}
+
+.segmentCurrent {
+  background: var(--signal);
+}
+
+.signOut {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.signOut:hover {
+  color: var(--text-1);
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-10) var(--space-6) var(--space-8);
+}
+
+.content {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  animation: stepIn var(--duration-slow) var(--ease-out);
+}
+
+.wide {
+  max-width: 1040px;
+}
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stepLabel {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  max-width: 520px;
+  font-size: var(--text-md);
+  line-height: 22px;
+  color: var(--text-2);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.footerNote {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.footerActions {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.error {
+  padding: var(--space-3);
+  border: 1px solid rgba(238, 106, 95, 0.28);
+  border-radius: var(--radius-md);
+  background: var(--danger-muted);
+  font-size: var(--text-ui);
+}
+
+/* Students -------------------------------------------------------------- */
+.studentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.studentHead,
+.studentRow {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1.3fr) minmax(0, 1fr) 132px 32px;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.studentHead {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+  padding-bottom: var(--space-1);
+}
+
+.studentHead span:first-child {
+  grid-column: 2;
+}
+
+.addRow {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+}
+
+.hint {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+/* Subjects -------------------------------------------------------------- */
+.subjectGroups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.groupLabel {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.subjectGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.subjectToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--text-ui);
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.subjectToggle:hover {
+  background: var(--hover);
+  color: var(--text-1);
+}
+
+.subjectToggle:has(input:checked) {
+  border-color: var(--signal-line);
+  background: var(--signal-subtle);
+  color: var(--text-1);
+}
+
+.subjectToggle:has(input:focus-visible) {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.checkbox {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.checkbox:checked {
+  border-color: var(--signal);
+  background: var(--signal);
+}
+
+.checkbox:checked::after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  margin-top: -2px;
+  border-left: 1.75px solid var(--on-signal);
+  border-bottom: 1.75px solid var(--on-signal);
+  transform: rotate(-45deg);
+}
+
+.checkbox:focus-visible {
+  outline: none;
+}
+
+.subjectName {
+  flex: 1;
+  min-width: 0;
+}
+
+.customRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.customRow > :first-child {
+  flex: 1;
+}
+
+.removeCustom {
+  margin-left: auto;
+}
+
+/* PACE grid ------------------------------------------------------------- */
+.gridPanel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  overflow-x: auto;
+}
+
+.grid {
+  width: 100%;
+  font-size: var(--text-ui);
+}
+
+.grid th {
+  height: 40px;
+  padding: 0 var(--space-2);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-3);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.grid thead th:first-child {
+  padding-left: var(--space-4);
+  min-width: 150px;
+}
+
+.grid td {
+  padding: var(--space-1-5) var(--space-1);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.grid tbody tr:last-child td,
+.grid tbody tr:last-child th {
+  border-bottom: none;
+}
+
+.rowHeader {
+  padding: 0 var(--space-2) 0 var(--space-4) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  color: var(--text-1) !important;
+  font-size: var(--text-ui) !important;
+}
+
+.rowName {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cell {
+  width: 100%;
+  min-width: 76px;
+  height: 34px;
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.22);
+  font-family: var(--font-mono);
+  font-size: var(--text-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-1);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.cell::placeholder {
+  color: var(--text-disabled);
+}
+
+.cell:hover {
+  border-color: var(--border-strong);
+}
+
+.cell:focus-visible {
+  outline: none;
+  border-color: var(--signal);
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.cellValid {
+  border-color: var(--border);
+}
+
+.cellInvalid {
+  border-color: var(--danger) !important;
+}
+
+.fillCell {
+  width: 1%;
+  padding-right: var(--space-3) !important;
+  white-space: nowrap;
+}
+
+.gridMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.gridMeta strong {
+  font-weight: var(--weight-medium);
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.gridError {
+  color: var(--danger);
+}
+
+.stacked {
+  display: none;
+}
+
+/* Done ------------------------------------------------------------------ */
+.doneMark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+.doneMark svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+}
+
+.stat + .stat {
+  border-left: 1px solid var(--border);
+}
+
+.statValue {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+@media (max-width: 720px) {
+  .top {
+    padding: var(--space-4);
+  }
+
+  .main {
+    padding: var(--space-6) var(--space-4) var(--space-6);
+  }
+
+  .content {
+    gap: var(--space-6);
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .studentHead {
+    display: none;
+  }
+
+  .studentRow {
+    grid-template-columns: 28px minmax(0, 1fr) 40px;
+    grid-template-areas:
+      'avatar first remove'
+      '. last last'
+      '. level level';
+    row-gap: var(--space-2);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .studentRow > :nth-child(1) {
+    grid-area: avatar;
+  }
+
+  .studentRow > :nth-child(2) {
+    grid-area: first;
+  }
+
+  .studentRow > :nth-child(3) {
+    grid-area: last;
+  }
+
+  .studentRow > :nth-child(4) {
+    grid-area: level;
+  }
+
+  .studentRow > :nth-child(5) {
+    grid-area: remove;
+  }
+
+  .subjectGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gridPanel {
+    display: none;
+  }
+
+  .stacked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .stackedStudent {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .stackedHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+
+  .stackedCells {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .stackedCell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--text-2);
+  }
+
+  .stackedCell .cell {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stat + .stat {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer {
+    position: sticky;
+    bottom: 0;
+    margin: 0 calc(var(--space-4) * -1);
+    padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+    background: var(--bg-app);
+  }
+
+  .footerNote {
+    display: none;
+  }
+}

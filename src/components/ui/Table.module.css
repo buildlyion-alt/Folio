@@ -1,0 +1,123 @@
+.scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+.table th {
+  height: 36px;
+  padding: 0 var(--space-3);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.table td {
+  height: 44px;
+  padding: 0 var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.table th:first-child,
+.table td:first-child {
+  padding-left: var(--space-4);
+}
+
+.table th:last-child,
+.table td:last-child {
+  padding-right: var(--space-4);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.interactive tbody tr:hover {
+  background: var(--hover);
+}
+
+/* Whole-row navigation: the row's primary link stretches over the row. */
+.rowLinkRow {
+  position: relative;
+}
+
+.rowLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.rowLink:focus-visible {
+  outline: none;
+}
+
+.rowLink:focus-visible::after {
+  outline: 2px solid var(--signal);
+  outline-offset: -2px;
+  border-radius: var(--radius-xs);
+}
+
+.num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--text-3);
+}
+
+.secondary {
+  color: var(--text-2);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 24px;
+  margin: 0 calc(var(--space-1) * -1);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-xs);
+  color: inherit;
+  font: inherit;
+}
+
+.sortButton:hover {
+  color: var(--text-1);
+}
+
+.sortButton svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+}
+
+.sortButton:hover svg,
+.sorted .sortButton svg {
+  opacity: 1;
+}
+
+.sorted {
+  color: var(--text-1) !important;
+}
+
+.alignEnd .sortButton {
+  flex-direction: row-reverse;
+}

@@ -1,0 +1,153 @@
+/*
+ * Folio design tokens.
+ *
+ * Built around the brand palette: #212121 (primary dark), #CBFE00 (signal), #E6E6E6 (light).
+ * The interface is neutral charcoal; the signal color is spent only where the eye should
+ * land first — the primary action, the active item, a completed PACE, focus, AI actions.
+ *
+ * Contrast (WCAG 2): text-1 ≥ 9.4:1 and text-2 ≥ 4.8:1 on every surface; text-3 clears
+ * 4.5:1 on bg-app / surface-1 / surface-2 only — use text-2 on floating layers.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Primitives ------------------------------------------------------------ */
+  --gray-50: #141414;
+  --gray-75: #181818;
+  --gray-150: #212121; /* brand: primary dark */
+  --gray-200: #292929;
+  --gray-250: #303030;
+  --gray-300: #383838;
+  --gray-400: #4a4a4a;
+  --gray-500: #5e5e5e;
+  --gray-550: #6b6b6b;
+  --gray-600: #8f8f8f;
+  --gray-700: #a6a6a6;
+  --gray-900: #e6e6e6; /* brand: light */
+  --lime-400: #d7ff3d;
+  --lime-500: #cbfe00; /* brand: signal */
+  --lime-600: #b6e400;
+  --amber-500: #e8a93b;
+  --red-500: #ee6a5f;
+
+  /* Surfaces (each floating layer sits one step up) ----------------------- */
+  --bg-sidebar: var(--gray-50);
+  --bg-app: var(--gray-75);
+  --surface-1: var(--gray-150);
+  --surface-2: var(--gray-200);
+  --surface-3: var(--gray-250);
+  --surface-4: var(--gray-300);
+
+  /* Text ------------------------------------------------------------------ */
+  --text-1: var(--gray-900);
+  --text-2: var(--gray-700);
+  --text-3: var(--gray-600);
+  --text-disabled: var(--gray-500);
+
+  /* Lines & state washes (translucent, so one value works on every surface) */
+  --border: rgba(230, 230, 230, 0.08);
+  --border-subtle: rgba(230, 230, 230, 0.055);
+  --border-strong: rgba(230, 230, 230, 0.14);
+  --hover: rgba(230, 230, 230, 0.045);
+  --pressed: rgba(230, 230, 230, 0.075);
+  --selected: rgba(230, 230, 230, 0.075);
+
+  /* Signal ---------------------------------------------------------------- */
+  --signal: var(--lime-500);
+  --signal-hover: var(--lime-400);
+  --signal-active: var(--lime-600);
+  --signal-muted: rgba(203, 254, 0, 0.12);
+  --signal-subtle: rgba(203, 254, 0, 0.06);
+  --signal-line: rgba(203, 254, 0, 0.45);
+  --on-signal: #141414;
+
+  /* Status ---------------------------------------------------------------- */
+  --warning: var(--amber-500);
+  --warning-muted: rgba(232, 169, 59, 0.12);
+  --danger: var(--red-500);
+  --danger-muted: rgba(238, 106, 95, 0.12);
+
+  /* Data visualization ---------------------------------------------------- */
+  --chart-bar: var(--gray-550); /* 3:1 against surface-1 */
+  --chart-bar-quiet: #3d3d3d;
+  --chart-grid: rgba(230, 230, 230, 0.06);
+  --chart-target: rgba(230, 230, 230, 0.35);
+
+  /* Typography ------------------------------------------------------------ */
+  --font-sans: var(--font-geist-sans), -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --text-xs: 11px;
+  --leading-xs: 16px;
+  --text-sm: 12px;
+  --leading-sm: 16px;
+  --text-ui: 13px;
+  --leading-ui: 20px;
+  --text-md: 14px;
+  --leading-md: 20px;
+  --text-lg: 16px;
+  --leading-lg: 24px;
+  --text-xl: 20px;
+  --leading-xl: 28px;
+  --text-2xl: 24px;
+  --leading-2xl: 32px;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Spacing (4px grid) ---------------------------------------------------- */
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-2-5: 10px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius (nothing rounder than 10px except circles) --------------------- */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-full: 999px;
+
+  /* Sizing ---------------------------------------------------------------- */
+  --control-sm: 28px;
+  --control-md: 32px;
+  --control-lg: 36px;
+  --touch-target: 44px;
+  --icon-sm: 14px;
+  --icon-md: 16px;
+  --icon-lg: 20px;
+  --sidebar-width: 232px;
+  --topbar-height: 52px;
+  --mobile-nav-height: 60px;
+  --content-max: 1200px;
+
+  /* Elevation (floating layers only) -------------------------------------- */
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-dialog: 0 20px 56px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35);
+
+  /* Motion ---------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 240ms;
+
+  /* Layers ---------------------------------------------------------------- */
+  --z-sticky: 10;
+  --z-nav: 20;
+  --z-popover: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+}

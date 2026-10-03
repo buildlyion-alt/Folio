@@ -1,0 +1,106 @@
+.root {
+  position: relative;
+  display: inline-flex;
+}
+
+.root.block {
+  display: flex;
+  width: 100%;
+}
+
+.menu {
+  position: absolute;
+  z-index: var(--z-popover);
+  min-width: 200px;
+  padding: var(--space-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-float);
+  animation: menuIn var(--duration-base) var(--ease-out);
+}
+
+.bottom {
+  top: calc(100% + var(--space-1));
+}
+
+.top {
+  bottom: calc(100% + var(--space-1));
+}
+
+.start {
+  left: 0;
+}
+
+.end {
+  right: 0;
+}
+
+.stretch {
+  left: 0;
+  right: 0;
+}
+
+.header {
+  padding: var(--space-2) var(--space-2) var(--space-2);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-1);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: var(--control-md);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-ui);
+  color: var(--text-1);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.item svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--text-2);
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--surface-3);
+  outline: none;
+}
+
+.danger {
+  color: var(--danger);
+}
+
+.danger svg {
+  color: var(--danger);
+}
+
+.separator {
+  height: 1px;
+  margin: var(--space-1) calc(var(--space-1) * -1);
+  background: var(--border);
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+.top.menu {
+  animation-name: menuInUp;
+}
+
+@keyframes menuInUp {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}

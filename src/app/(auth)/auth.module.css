@@ -1,0 +1,120 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--bg-app);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4) var(--space-16);
+}
+
+.column {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: var(--text-md);
+  color: var(--text-2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.formError {
+  padding: var(--space-2-5) var(--space-3);
+  border: 1px solid rgba(238, 106, 95, 0.28);
+  border-radius: var(--radius-md);
+  background: var(--danger-muted);
+  font-size: var(--text-ui);
+  color: var(--text-1);
+}
+
+.switch {
+  font-size: var(--text-ui);
+  color: var(--text-2);
+}
+
+.switch a {
+  color: var(--text-1);
+  font-weight: var(--weight-medium);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.switch a:hover {
+  text-decoration-color: var(--text-1);
+}
+
+.demo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  color: var(--text-2);
+}
+
+.demo strong {
+  display: block;
+  font-weight: var(--weight-medium);
+  color: var(--text-1);
+}
+
+.footer {
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.footer p {
+  max-width: 360px;
+}
+
+@media (max-width: 640px) {
+  .top {
+    padding: var(--space-4);
+  }
+
+  .main {
+    align-items: flex-start;
+    padding-top: var(--space-6);
+  }
+
+  .footer {
+    padding: var(--space-4);
+  }
+}

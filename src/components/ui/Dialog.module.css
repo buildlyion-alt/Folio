@@ -1,0 +1,142 @@
+.dialog {
+  margin: auto;
+  width: calc(100% - var(--space-8));
+  max-width: 520px;
+  max-height: calc(100dvh - var(--space-16));
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  color: var(--text-1);
+  box-shadow: var(--shadow-dialog);
+  overflow: hidden;
+}
+
+.dialog[open] {
+  display: flex;
+  flex-direction: column;
+  animation: dialogIn var(--duration-base) var(--ease-out);
+}
+
+.dialog::backdrop {
+  background: rgba(8, 8, 8, 0.66);
+  animation: fadeIn var(--duration-base) var(--ease-out);
+}
+
+.sm {
+  max-width: 420px;
+}
+
+.lg {
+  max-width: 680px;
+}
+
+.xl {
+  max-width: 880px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-3) var(--space-5);
+  flex-shrink: 0;
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  padding-top: var(--space-1);
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-lg);
+  line-height: var(--leading-lg);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+.description {
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+  color: var(--text-2);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-1) var(--space-5) var(--space-5);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.footerStart {
+  margin-right: auto;
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes sheetIn {
+  from {
+    transform: translateY(24px);
+    opacity: 0.6;
+  }
+}
+
+/* Phones: dialogs become bottom sheets that respect the home indicator. */
+@media (max-width: 640px) {
+  .dialog {
+    width: 100%;
+    max-width: none;
+    margin: auto 0 0;
+    max-height: calc(100dvh - var(--space-6));
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    border-bottom: none;
+  }
+
+  .dialog[open] {
+    animation: sheetIn var(--duration-slow) var(--ease-out);
+  }
+
+  .full {
+    height: calc(100dvh - var(--space-6));
+  }
+
+  .header {
+    padding: var(--space-4) var(--space-3) var(--space-2) var(--space-4);
+  }
+
+  .body {
+    padding: var(--space-1) var(--space-4) var(--space-4);
+  }
+
+  .footer {
+    padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+  }
+}

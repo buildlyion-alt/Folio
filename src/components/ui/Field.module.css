@@ -1,0 +1,192 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+  min-width: 0;
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-2);
+}
+
+.optional {
+  font-weight: var(--weight-regular);
+  color: var(--text-3);
+}
+
+.aside {
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.hint {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--text-3);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--danger);
+}
+
+.error svg {
+  width: 13px;
+  height: 13px;
+  margin-top: 1.5px;
+}
+
+.control {
+  width: 100%;
+  height: var(--control-md);
+  padding: 0 var(--space-3);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-ui);
+  color: var(--text-1);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.control::placeholder {
+  color: var(--text-3);
+}
+
+.control:hover:not(:disabled) {
+  border-color: rgba(230, 230, 230, 0.22);
+}
+
+.control:focus-visible {
+  outline: none;
+  border-color: var(--signal);
+  box-shadow: 0 0 0 1px var(--signal);
+}
+
+.control[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.control[aria-invalid='true']:focus-visible {
+  box-shadow: 0 0 0 1px var(--danger);
+}
+
+.control:disabled {
+  opacity: 0.5;
+}
+
+.lg {
+  height: var(--control-lg);
+  font-size: var(--text-md);
+}
+
+.numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+.textarea {
+  height: auto;
+  min-height: 72px;
+  padding: var(--space-2) var(--space-3);
+  line-height: var(--leading-ui);
+  resize: vertical;
+}
+
+.selectWrap {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+.select {
+  appearance: none;
+  padding-right: var(--space-8);
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+.select option {
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+
+.selectIcon {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  transform: translateY(-50%);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.affixWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.affixWrap .control {
+  padding-right: var(--space-8);
+}
+
+.suffix {
+  position: absolute;
+  right: var(--space-3);
+  font-size: var(--text-ui);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.leadingIcon {
+  position: absolute;
+  left: var(--space-3);
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.withLeadingIcon {
+  padding-left: calc(var(--space-3) + var(--icon-md) + var(--space-2));
+}
+
+.leadingText {
+  position: absolute;
+  left: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.affixWrap .withLeadingText {
+  padding-left: calc(var(--space-3) + 5ch);
+}
+
+/* 16px on touch devices keeps iOS from zooming into focused inputs. */
+@media (pointer: coarse) {
+  .control {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .textarea {
+    height: auto;
+  }
+}
