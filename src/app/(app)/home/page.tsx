@@ -1,60 +1,52 @@
 import type { Metadata } from 'next'
-import { ActivityFeed } from '@/components/dashboard/ActivityFeed'
-import { AttentionList, type AttentionItem } from '@/components/dashboard/AttentionList'
-import { GettingStarted } from '@/components/dashboard/GettingStarted'
-import { ProgressMatrix } from '@/components/dashboard/ProgressMatrix'
-import { SummaryStrip } from '@/components/dashboard/SummaryStrip'
 import { AssistantComposer } from '@/components/assistant/AssistantComposer'
+import { NeedsALook } from '@/components/home/NeedsALook'
+import { StudentOverview } from '@/components/home/StudentOverview'
 import { NoStudents } from '@/components/students/NoStudents'
-import { formatWeekdayDate, greetingFor, hourIn } from '@/domain/dates'
-import { firstWord } from '@/domain/format'
-import { getDb } from '@/server/db'
-import { getRecentActivity } from '@/server/queries/activity'
+import { greetingFor, hourIn } from '@/domain/dates'
+import { firstWord, plural } from '@/domain/format'
 import { getCurrentOverview } from '@/server/queries/current'
-import styles from '@/components/dashboard/Dashboard.module.css'
+import styles from '@/components/home/Home.module.css'
 
 export const metadata: Metadata = { title: 'Home' }
 
 export default async function HomePage() {
   const { ctx, overview } = await getCurrentOverview()
-  // Setup entries (current positions from onboarding) aren't progress — keep the feed about real work.
-  const activity = await getRecentActivity(getDb(), ctx.household.id, { limit: 10, excludeSources: ['onboarding'] })
+  const { totals, students } = overview
   const greeting = greetingFor(hourIn(ctx.household.timezone))
-  const hasCompletions = overview.students.some((s) => s.enrollments.some((e) => e.completedTotal > 0))
-
-  const attention: AttentionItem[] = overview.students.flatMap((student) => [
-    ...student.concerns.map((c) => ({ ...c, studentId: student.id, studentName: student.firstName, initials: student.initials, kind: 'concern' as const })),
-    ...student.todos.map((c) => ({ ...c, studentId: student.id, studentName: student.firstName, initials: student.initials, kind: 'todo' as const }))
-  ])
 
   return (
     <div className={styles.page}>
-      <header className={styles.greeting}>
-        <div>
-          <h1 className={styles.greetingTitle}>
-            {greeting}, {firstWord(ctx.user.name)}.
-          </h1>
-          <p className={styles.greetingText}>
-            {overview.students.length
-              ? 'Here’s how everyone is progressing.'
-              : 'Add your students to start tracking PACE progress.'}
+      <header className={styles.header}>
+        <h1 className={styles.title}>
+          {greeting}, {firstWord(ctx.user.name)}.
+        </h1>
+        {students.length ? (
+          <p className={styles.summary}>
+            <span>
+              <strong>{totals.students}</strong> {plural(totals.students, 'student').replace(/^\d+ /, '')}
+            </span>
+            <span>
+              <strong>{totals.completedThisWeek}</strong> {plural(totals.completedThisWeek, 'PACE').replace(/^\d+ /, '')} completed this week
+            </span>
+            {totals.averageScore !== null ? (
+              <span>
+                <strong>{totals.averageScore}%</strong> average score
+              </span>
+            ) : null}
           </p>
-        </div>
-        <p className={styles.date}>{formatWeekdayDate(overview.today)}</p>
+        ) : (
+          <p className={styles.summary}>Add your students to start keeping PACE records.</p>
+        )}
       </header>
 
-      {overview.students.length === 0 ? (
+      {students.length === 0 ? (
         <NoStudents />
       ) : (
         <>
-          <AssistantComposer />
-          <SummaryStrip totals={overview.totals} hasCompletions={hasCompletions} />
-          {!hasCompletions ? <GettingStarted firstStudent={overview.students[0]} /> : null}
-          <ProgressMatrix overview={overview} />
-          <div className={styles.columns}>
-            <AttentionList items={attention} />
-            <ActivityFeed items={activity} today={overview.today} />
-          </div>
+          <AssistantComposer placeholder="Tell Folio what happened — “Gabriel finished Math 1084 with 94%”" />
+          <StudentOverview overview={overview} />
+          <NeedsALook overview={overview} />
         </>
       )}
     </div>

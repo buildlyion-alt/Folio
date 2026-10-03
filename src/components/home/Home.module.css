@@ -1,0 +1,355 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Greeting + one quiet line of numbers ---------------------------------- */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-6);
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  color: var(--text-2);
+}
+
+.summary strong {
+  font-weight: var(--weight-semibold);
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section headings on the canvas ---------------------------------------- */
+.sectionTitle {
+  font-size: var(--text-lg);
+  line-height: var(--leading-lg);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+.sectionHint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--text-3);
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+}
+
+/* The children ---------------------------------------------------------- */
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.overviewHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.tableWrap {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  overflow-x: auto;
+}
+
+:global([data-theme='dark']) .tableWrap,
+:global([data-theme='dark']) .blocks,
+:global([data-theme='dark']) .lookList {
+  border-color: var(--border);
+}
+
+.table {
+  width: 100%;
+  min-width: 640px;
+}
+
+.table thead th {
+  height: 44px;
+  padding: 0 var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-3);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table tbody tr + tr > * {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.table td,
+.table tbody th {
+  height: 60px;
+  padding: 0 var(--space-1);
+  vertical-align: middle;
+  text-align: left;
+}
+
+.table .nameCol {
+  width: 22%;
+  padding-left: var(--space-5);
+}
+
+.table thead .nameCol {
+  padding-left: var(--space-5);
+}
+
+.student {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2-5);
+  min-height: 40px;
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.student:hover {
+  color: var(--signal-text);
+}
+
+.pace {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  height: 40px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: var(--text-md);
+  color: var(--text-1);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.pace:hover {
+  background: var(--surface-3);
+}
+
+.paceIdle {
+  color: var(--text-3);
+}
+
+.flag {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--warning-mark);
+  flex-shrink: 0;
+}
+
+.weekCol {
+  width: 104px;
+  padding-right: var(--space-5) !important;
+  text-align: right !important;
+  font-size: var(--text-md);
+  color: var(--text-1);
+}
+
+.zero {
+  color: var(--text-3);
+}
+
+/* Phones: one surface, one block per child ------------------------------ */
+.blocks {
+  display: none;
+  list-style: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+}
+
+.block {
+  padding: var(--space-4);
+}
+
+.block + .block {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.blockHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2-5);
+  min-height: 32px;
+}
+
+.blockName {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+}
+
+.blockWeek {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  color: var(--text-3);
+}
+
+.blockGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-1-5);
+  margin-top: var(--space-3);
+}
+
+/* Subject above its PACE, so names never truncate on a 360px phone. */
+.blockCell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 52px;
+  padding: var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.blockCell:active {
+  background: var(--surface-3);
+}
+
+.blockSubject {
+  max-width: 100%;
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blockPace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+}
+
+.blockCell :global(.mono) {
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  color: var(--text-1);
+}
+
+/* Needs a look ---------------------------------------------------------- */
+.look {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.lookList {
+  list-style: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+.lookList li + li {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lookItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-3) var(--space-5);
+  text-align: left;
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.lookItem:hover {
+  background: var(--surface-2);
+}
+
+.lookText {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-2);
+}
+
+.lookName {
+  font-weight: var(--weight-semibold);
+  color: var(--text-1);
+}
+
+.lookAction {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--signal-text);
+}
+
+@media (max-width: 800px) {
+  .tableWrap {
+    display: none;
+  }
+
+  .blocks {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    gap: var(--space-6);
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .lookItem {
+    padding: var(--space-3) var(--space-4);
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .lookText {
+    flex-basis: calc(100% - 24px);
+  }
+
+  .lookAction {
+    margin-left: calc(7px + var(--space-3));
+  }
+}
+
+.blockCell .zero {
+  color: var(--text-3);
+}

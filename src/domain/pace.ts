@@ -15,8 +15,14 @@ export type PaceStatus = 'not_started' | 'active' | 'completed'
 
 export const PACE_STATUS_LABEL: Record<PaceStatus, string> = {
   not_started: 'Not started',
-  active: 'Active',
+  active: 'In progress',
   completed: 'Completed'
+}
+
+/** What a record shows in a list: its score when it has one, otherwise where it stands. */
+export function resultLabel(status: PaceStatus, testScore: number | null): string {
+  if (status === 'completed') return testScore !== null ? `${testScore}%` : 'Completed'
+  return PACE_STATUS_LABEL[status]
 }
 
 export function isValidPaceNumber(value: number): boolean {

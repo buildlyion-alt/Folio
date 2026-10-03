@@ -130,14 +130,6 @@ function parts(date: IsoDate): { y: number; m: number; d: number; weekday: numbe
   return { y, m, d, weekday: toUtc(date).getUTCDay() }
 }
 
-/** "Oct 03" — two-digit day keeps dates aligned in tables. Adds the year when it differs. */
-export function formatTableDate(date: IsoDate, today?: IsoDate): string {
-  const { y, m, d } = parts(date)
-  const base = `${MONTHS_SHORT[m - 1]} ${String(d).padStart(2, '0')}`
-  if (today && today.slice(0, 4) !== String(y)) return `${base}, ${y}`
-  return base
-}
-
 /** "Oct 3" or "Oct 3, 2025" when not in the reference year. */
 export function formatShortDate(date: IsoDate, today?: IsoDate): string {
   const { y, m, d } = parts(date)

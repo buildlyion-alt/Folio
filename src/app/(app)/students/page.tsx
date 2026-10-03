@@ -17,12 +17,6 @@ export default async function StudentsPage(props: PageProps<'/students'>) {
     .orderBy(asc(students.firstName))
 
   return (
-    <StudentsDirectory
-      students={overview.students}
-      today={overview.today}
-      passMark={overview.household.passMark}
-      archived={archived}
-      openNew={params.new === '1'}
-    />
+    <StudentsDirectory students={overview.students} archived={archived} openNew={params.new === '1'} />
   )
 }

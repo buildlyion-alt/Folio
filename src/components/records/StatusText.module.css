@@ -1,0 +1,29 @@
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  white-space: nowrap;
+  color: var(--text-2);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--text-3);
+  flex-shrink: 0;
+}
+
+.completed .dot {
+  background: var(--signal);
+}
+
+.active .dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--signal-text);
+}
+
+.not_started .dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--text-3);
+}

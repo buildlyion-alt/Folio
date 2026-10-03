@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-03T10:08:45+00:00",
+  "title": "Design System: Folio",
+  "extensions": {
+    "colorMeta": {
+      "signal-green": {
+        "role": "primary",
+        "displayName": "Signal Green",
+        "canonical": "oklch(72.5% 0.170 147.6)",
+        "tonalRamp": [
+          "#001300",
+          "#003100",
+          "#005310",
+          "#007628",
+          "#1b9c40",
+          "#5dbe6d",
+          "#8fe09a",
+          "#bfffc7"
+        ]
+      },
+      "deep-green-text": {
+        "role": "primary",
+        "displayName": "Deep Green Text",
+        "canonical": "oklch(51.4% 0.134 148.0)",
+        "tonalRamp": [
+          "#001200",
+          "#002f09",
+          "#0d5020",
+          "#267338",
+          "#419752",
+          "#70b97b",
+          "#9ddba5",
+          "#cafed0"
+        ]
+      },
+      "green-wash": {
+        "role": "primary",
+        "displayName": "Green Wash",
+        "canonical": "oklch(95.0% 0.027 152.4)",
+        "tonalRamp": [
+          "#070d08",
+          "#1f2721",
+          "#3a453d",
+          "#58655b",
+          "#77877b",
+          "#9ba99e",
+          "#c0cdc3",
+          "#e7f2e9"
+        ]
+      },
+      "folder-black": {
+        "role": "neutral",
+        "displayName": "Folder Black",
+        "canonical": "oklch(17.0% 0.015 140.4)",
+        "tonalRamp": [
+          "#0a0c09",
+          "#232622",
+          "#3f433e",
+          "#5d635c",
+          "#7e857c",
+          "#a1a7a0",
+          "#c5cbc4",
+          "#ebf0ea"
+        ]
+      },
+      "mint-canvas": {
+        "role": "neutral",
+        "displayName": "Mint Canvas",
+        "canonical": "oklch(97.4% 0.012 162.1)",
+        "tonalRamp": [
+          "#090c0a",
+          "#222624",
+          "#3e4341",
+          "#5c635f",
+          "#7d8580",
+          "#a0a7a3",
+          "#c4cbc7",
+          "#eaf0ed"
+        ]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "oklch(98.1% 0.007 160.1)",
+        "tonalRamp": [
+          "#0a0c0b",
+          "#232624",
+          "#404341",
+          "#5e6260",
+          "#7f8481",
+          "#a2a6a4",
+          "#c6cac8",
+          "#ecefed"
+        ]
+      },
+      "sage-wash": {
+        "role": "neutral",
+        "displayName": "Sage Wash",
+        "canonical": "oklch(95.6% 0.012 153.7)",
+        "tonalRamp": [
+          "#090c0a",
+          "#222623",
+          "#3f4340",
+          "#5d635e",
+          "#7d847f",
+          "#a0a7a2",
+          "#c5cbc6",
+          "#ebf0ec"
+        ]
+      },
+      "sage-tint": {
+        "role": "neutral",
+        "displayName": "Sage Tint",
+        "canonical": "oklch(89.8% 0.030 143.8)",
+        "tonalRamp": [
+          "#080d07",
+          "#20281f",
+          "#3b453a",
+          "#586558",
+          "#788777",
+          "#9caa9b",
+          "#c1cdc0",
+          "#e7f2e7"
+        ]
+      },
+      "moss-text": {
+        "role": "neutral",
+        "displayName": "Moss Text",
+        "canonical": "oklch(40.4% 0.026 151.5)",
+        "tonalRamp": [
+          "#070d09",
+          "#1f2721",
+          "#3b453d",
+          "#58655b",
+          "#78877b",
+          "#9ba99e",
+          "#c1cdc3",
+          "#e7f2e9"
+        ]
+      },
+      "lichen-text": {
+        "role": "neutral",
+        "displayName": "Lichen Text",
+        "canonical": "oklch(50.6% 0.024 151.8)",
+        "tonalRamp": [
+          "#080d09",
+          "#202721",
+          "#3b453d",
+          "#59655b",
+          "#78877b",
+          "#9ca99f",
+          "#c1cdc3",
+          "#e8f1ea"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(92.0% 0.017 151.1)",
+        "tonalRamp": [
+          "#090c09",
+          "#212722",
+          "#3d443f",
+          "#5b645d",
+          "#7b857d",
+          "#9fa8a0",
+          "#c4ccc5",
+          "#eaf1eb"
+        ]
+      },
+      "ochre-mark": {
+        "role": "status",
+        "displayName": "Ochre Mark",
+        "canonical": "oklch(62.6% 0.134 71.8)",
+        "tonalRamp": [
+          "#1b0400",
+          "#3d1b00",
+          "#623600",
+          "#8a5300",
+          "#b37300",
+          "#d2984c",
+          "#f2bf80",
+          "#ffe6b2"
+        ]
+      },
+      "brick": {
+        "role": "status",
+        "displayName": "Brick",
+        "canonical": "oklch(54.4% 0.179 28.9)",
+        "tonalRamp": [
+          "#260000",
+          "#4e0000",
+          "#7a1711",
+          "#a83127",
+          "#d84d3f",
+          "#f77b6b",
+          "#ffa797",
+          "#ffd3c5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles and the Home greeting; 24px on phones."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headings on the canvas."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Names, subjects, results and sentences."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, chips, form labels, dense table cells."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Dates, hints, column headers, counts."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "PACE numbers and other identifiers, so columns line up."
+      }
+    },
+    "shadows": [
+      {
+        "name": "float",
+        "value": "0 8px 24px rgba(12,17,11,0.10), 0 1px 3px rgba(12,17,11,0.08)",
+        "purpose": "Menus, the command bar, toasts."
+      },
+      {
+        "name": "dialog",
+        "value": "0 24px 64px rgba(12,17,11,0.18), 0 2px 8px rgba(12,17,11,0.08)",
+        "purpose": "Dialogs, over a rgba(12,17,11,0.42) scrim."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Every state transition."
+      },
+      {
+        "name": "duration-fast",
+        "value": "120ms",
+        "purpose": "Hover, press and color changes."
+      },
+      {
+        "name": "duration-base",
+        "value": "180ms",
+        "purpose": "Chevrons and small reveals."
+      },
+      {
+        "name": "duration-slow",
+        "value": "260ms",
+        "purpose": "Dialog and onboarding step entrances."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "640px"
+      },
+      {
+        "name": "home-blocks",
+        "value": "800px"
+      },
+      {
+        "name": "rail",
+        "value": "960px"
+      },
+      {
+        "name": "wide",
+        "value": "1180px"
+      }
+    ],
+    "themes": {
+      "dark": {
+        "canvas": "#0c110b",
+        "surface": "#121a13",
+        "text": "#e8f2ea",
+        "greenText": "#6fd486",
+        "ochre": "#e8b45c",
+        "sidebar": "#080c08"
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one Signal Green action on a screen: Log progress, Save, Confirm.",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M5 12h14\"/><path d=\"M12 5v14\"/></svg>Log progress</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:1px solid transparent;border-radius:8px;background:#4cc264;color:#0c110b;font:500 14px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 120ms cubic-bezier(0.22,1,0.36,1)}.ds-btn-primary:hover{background:#5acd71}.ds-btn-primary:active{background:#3fae56}.ds-btn-primary:focus-visible{outline:2px solid #1e7b37;outline-offset:2px}"
+    },
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "A page's own main action beside the always-visible Log progress: Add student, Save changes, Print.",
+      "html": "<button class=\"ds-btn-ink\">Add student</button>",
+      "css": ".ds-btn-ink{display:inline-flex;align-items:center;height:36px;padding:0 12px;border:1px solid transparent;border-radius:8px;background:#0c110b;color:#fff;font:500 14px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 120ms cubic-bezier(0.22,1,0.36,1)}.ds-btn-ink:hover{background:#1c2a1e}.ds-btn-ink:focus-visible{outline:2px solid #1e7b37;outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Supporting actions: Edit, Export CSV, Log Mathematics.",
+      "html": "<button class=\"ds-btn-secondary\">Export CSV</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;height:36px;padding:0 12px;border:1px solid #c7d6ca;border-radius:8px;background:#fff;color:#0c110b;font:500 14px/1 Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 120ms cubic-bezier(0.22,1,0.36,1)}.ds-btn-secondary:hover{background:#f5faf7}.ds-btn-secondary:active{background:#ebf3ed}.ds-btn-secondary:focus-visible{outline:2px solid #1e7b37;outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "White field with a green caret and focus ring.",
+      "html": "<input class=\"ds-input\" placeholder=\"Search names, subjects, PACEs, notes\">",
+      "css": ".ds-input{width:280px;height:36px;padding:0 12px;border:1px solid #c2d2c5;border-radius:8px;background:#fff;color:#0c110b;font:400 14px Geist,system-ui,sans-serif;caret-color:#1e7b37;transition:border-color 120ms cubic-bezier(0.22,1,0.36,1),box-shadow 120ms cubic-bezier(0.22,1,0.36,1)}.ds-input::placeholder{color:#5b695e}.ds-input:hover{border-color:#9fb3a3}.ds-input:focus-visible{outline:none;border-color:#1e7b37;box-shadow:0 0 0 1px #1e7b37}"
+    },
+    {
+      "name": "Choice Chip",
+      "kind": "chip",
+      "refersTo": "chip-selected",
+      "description": "Student and subject choices in Log progress; the meta shows the current PACE.",
+      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-chip\" aria-checked=\"true\">Mathematics <span class=\"ds-chip-meta\">1084</span></button><button class=\"ds-chip\" aria-checked=\"false\">English <span class=\"ds-chip-meta\">1081</span></button></div>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border:1px solid #c2d2c5;border-radius:8px;background:#fff;color:#3f4d42;font:500 14px Geist,system-ui,sans-serif;cursor:pointer;transition:background-color 120ms cubic-bezier(0.22,1,0.36,1)}.ds-chip:hover{background:rgba(12,17,11,0.04);color:#0c110b}.ds-chip[aria-checked=true]{border-color:#1e7b37;background:#e2f4e6;color:#0c110b;box-shadow:inset 0 0 0 1px #1e7b37}.ds-chip:focus-visible{outline:2px solid #1e7b37;outline-offset:2px}.ds-chip-meta{font:400 13px 'Geist Mono',ui-monospace,monospace;color:#5b695e}"
+    },
+    {
+      "name": "Sidebar Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Four destinations on the Folder Black rail; the active item has a lighter fill and a green icon.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-nav ds-nav-active\" href=\"#\"><span class=\"ds-dot\"></span>Home</a><a class=\"ds-nav\" href=\"#\"><span class=\"ds-dot\"></span>Students</a><a class=\"ds-nav\" href=\"#\"><span class=\"ds-dot\"></span>Records</a><a class=\"ds-nav\" href=\"#\"><span class=\"ds-dot\"></span>Reports</a></nav>",
+      "css": ".ds-rail{display:flex;flex-direction:column;gap:2px;width:220px;padding:12px;background:#0c110b;border-radius:12px}.ds-nav{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:8px;color:#a3b4a6;font:500 15px Geist,system-ui,sans-serif;text-decoration:none;transition:background-color 120ms cubic-bezier(0.22,1,0.36,1),color 120ms}.ds-nav:hover{background:rgba(238,245,239,0.06);color:#eef5ef}.ds-nav:focus-visible{outline:2px solid #4cc264;outline-offset:-2px}.ds-nav-active{background:#1c2b1f;color:#eef5ef}.ds-dot{width:16px;height:16px;border:1.75px solid currentColor;border-radius:4px}.ds-nav-active .ds-dot{color:#4cc264}"
+    },
+    {
+      "name": "PACE Matrix Row",
+      "kind": "custom",
+      "refersTo": "list-surface",
+      "description": "Signature: a child's current PACE per subject; each cell opens Log progress prefilled.",
+      "html": "<div class=\"ds-matrix\"><div class=\"ds-row\"><span class=\"ds-name\">Gabriel</span><button class=\"ds-pace\">1084</button><button class=\"ds-pace\">1081</button><button class=\"ds-pace\">1090<span class=\"ds-flag\"></span></button><span class=\"ds-week\">2</span></div></div>",
+      "css": ".ds-matrix{border:1px solid #e8f0ea;border-radius:12px;background:#fff;width:520px}.ds-row{display:grid;grid-template-columns:140px 100px 100px 100px 1fr;align-items:center;height:60px;padding:0 20px}.ds-name{font:500 15px Geist,system-ui,sans-serif;color:#0c110b}.ds-pace{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 8px;border:0;border-radius:8px;background:none;font:400 15px 'Geist Mono',ui-monospace,monospace;color:#0c110b;cursor:pointer;justify-self:start;transition:background-color 120ms cubic-bezier(0.22,1,0.36,1)}.ds-pace:hover{background:#ebf3ed}.ds-pace:focus-visible{outline:2px solid #1e7b37;outline-offset:2px}.ds-flag{width:7px;height:7px;border-radius:999px;background:#b97800}.ds-week{text-align:right;font:400 15px Geist,system-ui,sans-serif;color:#0c110b}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calm Record Folder",
+    "overview": "Folio is the paper record folder a homeschooling parent used to keep, made quiet and quick. Every screen answers one of three questions, in order: how are my children doing, what is each of them working on, and how do I record what just happened. The interface stays out of the way: a near-black green rail on the left, a mint canvas, white working surfaces, and one green signal that marks the thing to do next. It should feel like a well-kept folder on the kitchen table, not an analytics product.\n\nDensity is moderate and even. Lists and tables carry the content; cards are not used as decoration, and nothing is boxed twice. Secondary detail waits behind a click (a subject's full results, the \"More filters\" row, a record's history), so the first look is always short. The product follows the device's light or dark setting by default, and both themes use the same token names.",
+    "keyCharacteristics": [
+      "One green signal per screen; everything else is neutral, tinted toward the same green.",
+      "Children first: names and current PACE numbers lead every overview.",
+      "Lists on a single white surface with hairline rows, never grids of cards.",
+      "PACE numbers set in Geist Mono so columns of numbers scan cleanly.",
+      "Exceptions are marked quietly with a small ochre dot and plain words (\"Needs a look\")."
+    ],
+    "rules": [
+      {
+        "name": "The One Signal Rule",
+        "body": "Signal Green appears on at most one control per screen. Page-level actions that sit beside the always-visible Log progress button (Add student, Save changes, Print) use the Ink button instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinted Neutral Rule",
+        "body": "No pure grays. Every neutral leans toward the green family so the sidebar, canvas and text read as one material.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Kicker Rule",
+        "body": "Nothing sits above a heading except a breadcrumb on a deep page (\"Students /\"). Step names, letterheads and category labels go below the heading or into the meta line.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "A surface that does not float has no shadow; a white list on the mint canvas is defined by its 1px faint hairline alone.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do lead every overview with the children's names and current PACE numbers.",
+      "Do keep Signal Green for the one action to take next; use Ink for other page-level primaries.",
+      "Do put secondary detail behind a disclosure (accordion row, \"More filters\", record dialog) instead of showing it all at once.",
+      "Do write results the way a parent says them: \"Mathematics 1084 · 94% · Oct 3\".",
+      "Do keep readable text at Lichen Text (#5b695e) or darker in the light theme."
+    ],
+    "donts": [
+      "Don't build screens from stat cards, charts, activity feeds or insight panels; Folio is not an analytics dashboard.",
+      "Don't put a kicker, step label or letterhead above a heading.",
+      "Don't wrap individual values in their own cards or add borders around every group.",
+      "Don't add shadows to surfaces that do not float.",
+      "Don't create new top-level destinations; new features live inside Home, Students, Records or Reports."
+    ]
+  }
+}

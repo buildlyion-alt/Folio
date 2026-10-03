@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, useTransition, type FormEvent } from 'react'
 import { Pencil, Trash } from 'lucide-react'
 import { deleteRecord, getRecordDetail, updateRecord, type RecordDetail } from '@/app/actions/progress'
-import { StatusText } from '@/components/students/StudentProfile'
+import { StatusText } from '@/components/records/StatusText'
 import { Button } from '@/components/ui/Button'
 import { ChoiceGroup } from '@/components/ui/Choice'
 import { ConfirmDialog, Dialog } from '@/components/ui/Dialog'
@@ -15,7 +15,7 @@ import { useToast } from '@/components/ui/Toast'
 import { formatLongDate, formatShortDate, todayIn } from '@/domain/dates'
 import { useAppData } from '@/components/providers/AppData'
 import type { ActivityDTO } from '@/domain/dto'
-import { paceLevel, type PaceStatus } from '@/domain/pace'
+import { PACE_STATUS_LABEL, paceLevel, type PaceStatus } from '@/domain/pace'
 import { cx } from '@/lib/cx'
 import styles from './Records.module.css'
 
@@ -292,11 +292,7 @@ function EditRecord({ detail, onCancel, onSaved }: { detail: RecordDetail; onCan
               block
               value={status}
               onChange={setStatus}
-              options={[
-                { value: 'completed', label: 'Completed' },
-                { value: 'active', label: 'Active' },
-                { value: 'not_started', label: 'Not started' }
-              ]}
+              options={(['completed', 'active', 'not_started'] as const).map((value) => ({ value, label: PACE_STATUS_LABEL[value] }))}
             />
           </div>
         </div>

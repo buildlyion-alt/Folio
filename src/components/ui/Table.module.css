@@ -65,7 +65,7 @@
 }
 
 .rowLink:focus-visible::after {
-  outline: 2px solid var(--signal);
+  outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
   border-radius: var(--radius-xs);
 }

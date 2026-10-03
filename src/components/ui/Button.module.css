@@ -60,7 +60,7 @@
   width: 100%;
 }
 
-/* Primary — the one signal-filled action on a screen. */
+/* Primary: the green signal action. One per screen. */
 .primary {
   background: var(--signal);
   color: var(--on-signal);
@@ -74,23 +74,28 @@
   background: var(--signal-active);
 }
 
-.primary:focus-visible {
-  outline-color: var(--signal);
+/* Ink: a page's own main action (Add student, Print) — strong, but not the signal. */
+.ink {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.ink:hover:not(:disabled) {
+  background: var(--ink-hover);
 }
 
 .secondary {
-  background: var(--surface-2);
-  border-color: var(--border);
+  background: var(--surface-1);
+  border-color: var(--border-strong);
   color: var(--text-1);
 }
 
 .secondary:hover:not(:disabled) {
-  background: var(--surface-3);
-  border-color: var(--border-strong);
+  background: var(--surface-2);
 }
 
 .secondary:active:not(:disabled) {
-  background: var(--surface-2);
+  background: var(--surface-3);
 }
 
 .ghost {
@@ -108,16 +113,17 @@
 
 .danger {
   background: var(--danger-muted);
-  border-color: rgba(238, 106, 95, 0.22);
   color: var(--danger);
 }
 
 .danger:hover:not(:disabled) {
-  background: rgba(238, 106, 95, 0.18);
+  background: var(--danger-muted);
+  box-shadow: inset 0 0 0 1px currentColor;
 }
 
 .button:disabled {
   opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .loading {
@@ -138,6 +144,10 @@
 
 .primary .spinner {
   color: var(--on-signal);
+}
+
+.ink .spinner {
+  color: var(--on-ink);
 }
 
 .secondary .spinner,

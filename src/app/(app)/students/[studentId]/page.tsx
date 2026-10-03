@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import * as z from 'zod'
 import { StudentProfile } from '@/components/students/StudentProfile'
 import { getDb } from '@/server/db'
-import { getRecentActivity } from '@/server/queries/activity'
 import { getCurrentOverview } from '@/server/queries/current'
 import { getHouseholdOverview } from '@/server/queries/overview'
 import { listStudentRecords } from '@/server/queries/records'
@@ -32,17 +31,13 @@ export default async function StudentPage(props: PageProps<'/students/[studentId
     if (!student) notFound()
   }
 
-  const [records, activity] = await Promise.all([
-    listStudentRecords(db, ctx.household.id, studentId),
-    getRecentActivity(db, ctx.household.id, { studentId, limit: 12 })
-  ])
+  const records = await listStudentRecords(db, ctx.household.id, studentId)
   const enrolledIds = new Set(student.enrollments.map((e) => e.subjectId))
 
   return (
     <StudentProfile
       student={student}
       records={records}
-      activity={activity}
       today={overview.today}
       passMark={overview.household.passMark}
       archived={archived}

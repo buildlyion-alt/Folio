@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Download, Files, Funnel, Plus } from 'lucide-react'
+import { Download, Files, Search } from 'lucide-react'
 import { RecordsFilters } from '@/components/records/RecordsFilters'
 import { RecordsTable } from '@/components/records/RecordsTable'
 import { ButtonLink } from '@/components/ui/Button'
-import { EmptyState, PageHeader, Panel } from '@/components/ui/Misc'
+import { EmptyState, PageHeader } from '@/components/ui/Misc'
 import { plural } from '@/domain/format'
 import { getDb } from '@/server/db'
 import { getCurrentOverview } from '@/server/queries/current'
@@ -32,61 +32,57 @@ export default async function RecordsPage(props: PageProps<'/records'>) {
     <div className={styles.page}>
       <PageHeader
         title="Records"
-        description="Every PACE result for every child — the digital version of the record folder."
+        description="Every PACE result for every child, in one searchable folder."
         actions={
-          <ButtonLink href={`/records/export${query.toString() ? `?${query}` : ''}`} variant="secondary" icon={Download} prefetch={false}>
-            Export CSV
-          </ButtonLink>
+          total > 0 ? (
+            <ButtonLink href={`/records/export${query.toString() ? `?${query}` : ''}`} variant="secondary" icon={Download} prefetch={false}>
+              Export CSV
+            </ButtonLink>
+          ) : null
         }
       />
       <RecordsFilters
         filters={filters}
         students={overview.students.map((s) => ({ id: s.id, name: s.displayName }))}
         subjects={overview.subjects}
+        today={overview.today}
+        schoolYearStart={overview.household.schoolYearStart}
       />
-      <Panel flush>
-        <div className={styles.resultBar}>
-          <span>
-            {plural(total, 'record')}
-            {filtered ? ' match these filters' : ''}
-          </span>
+      <section className={styles.results} aria-label="Results">
+        <p className={styles.count} aria-live="polite">
+          {plural(total, 'record')}
+          {filtered && total ? ' found' : ''}
           {pageCount > 1 ? (
             <span className="tabular">
-              {(page - 1) * RECORDS_PAGE_SIZE + 1}–{Math.min(page * RECORDS_PAGE_SIZE, total)} of {total}
+              {' '}
+              · showing {(page - 1) * RECORDS_PAGE_SIZE + 1}–{Math.min(page * RECORDS_PAGE_SIZE, total)}
             </span>
           ) : null}
-        </div>
-        {rows.length === 0 ? (
-          filtered ? (
-            <EmptyState
-              compact
-              icon={Funnel}
-              title="No records match"
-              actions={
-                <ButtonLink href="/records" size="sm">
-                  Clear filters
-                </ButtonLink>
-              }
-            >
-              Try a wider date range or fewer filters.
-            </EmptyState>
+        </p>
+        <div className={styles.surface}>
+          {rows.length === 0 ? (
+            filtered ? (
+              <EmptyState
+                compact
+                icon={Search}
+                title="No records match"
+                actions={
+                  <ButtonLink href="/records" size="sm" variant="secondary">
+                    Clear filters
+                  </ButtonLink>
+                }
+              >
+                Try a wider date range or fewer filters.
+              </EmptyState>
+            ) : (
+              <EmptyState compact icon={Files} title="No records yet">
+                Every PACE you log is filed here automatically, ready to search and export.
+              </EmptyState>
+            )
           ) : (
-            <EmptyState
-              compact
-              icon={Files}
-              title="No records yet"
-              actions={
-                <ButtonLink href="/home" size="sm" icon={Plus}>
-                  Log progress from Home
-                </ButtonLink>
-              }
-            >
-              Every PACE you log — started, completed and scored — is filed here automatically.
-            </EmptyState>
-          )
-        ) : (
-          <RecordsTable rows={rows} filters={filters} passMark={overview.household.passMark} today={overview.today} />
-        )}
+            <RecordsTable rows={rows} filters={filters} passMark={overview.household.passMark} today={overview.today} />
+          )}
+        </div>
         {pageCount > 1 ? (
           <nav className={styles.pagination} aria-label="Pages">
             {page > 1 ? (
@@ -108,7 +104,7 @@ export default async function RecordsPage(props: PageProps<'/records'>) {
             )}
           </nav>
         ) : null}
-      </Panel>
+      </section>
     </div>
   )
 }

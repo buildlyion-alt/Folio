@@ -1,35 +1,36 @@
-import Link from 'next/link'
-import { ArrowLeft, Download } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { Download } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/Button'
+import { Breadcrumb } from '@/components/ui/Misc'
 import { cx } from '@/lib/cx'
 import type { ReportDocument } from '@/server/queries/reports'
 import { PrintButton } from './PrintButton'
 import styles from './Reports.module.css'
 
-export function ReportView({ report, csvHref }: { report: ReportDocument; csvHref: string }) {
+export function ReportView({ report, csvHref, options }: { report: ReportDocument; csvHref: string; options?: ReactNode }) {
   return (
     <div className={styles.viewer}>
       <div className={cx(styles.toolbar, 'no-print')}>
-        <Link href="/reports" className={styles.back}>
-          <ArrowLeft aria-hidden strokeWidth={1.75} /> Reports
-        </Link>
-        <div className={styles.toolbarActions}>
-          <ButtonLink href={csvHref} variant="secondary" icon={Download} prefetch={false}>
-            Download CSV
-          </ButtonLink>
-          <PrintButton />
+        <Breadcrumb trail={[{ href: '/reports', label: 'Reports' }]} current={report.title} />
+        <div className={styles.toolbarRow}>
+          {options}
+          <div className={styles.toolbarActions}>
+            <ButtonLink href={csvHref} variant="secondary" icon={Download} prefetch={false}>
+              Download CSV
+            </ButtonLink>
+            <PrintButton />
+          </div>
         </div>
       </div>
 
       <article className={styles.document} aria-labelledby="report-title">
         <header className={styles.docHeader}>
-          <p className={styles.docHousehold}>{report.householdName}</p>
           <h1 id="report-title" className={styles.docTitle}>
             {report.title}
             {report.subtitle ? <span className={styles.docSubtitle}> · {report.subtitle}</span> : null}
           </h1>
           <p className={styles.docMeta}>
-            {report.periodLabel} · Generated {report.generatedOn}
+            {report.householdName} · {report.periodLabel} · Generated {report.generatedOn}
           </p>
         </header>
 

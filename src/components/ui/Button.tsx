@@ -4,7 +4,8 @@ import type { LucideIcon } from 'lucide-react'
 import { cx } from '@/lib/cx'
 import styles from './Button.module.css'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
+/** primary: the green signal action (one per screen) · ink: a page's own main action · secondary · ghost · danger */
+export type ButtonVariant = 'primary' | 'ink' | 'secondary' | 'ghost' | 'danger'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface StyleProps {

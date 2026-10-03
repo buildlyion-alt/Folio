@@ -19,25 +19,26 @@ import type { AssistantResponse, ProposedChange } from '@/server/assistant/types
 import { cx } from '@/lib/cx'
 import styles from './Assistant.module.css'
 
-export function ProviderTag({ provider }: { provider: 'openai' | 'offline' }) {
-  const { assistant } = useAppData()
-  return (
-    <span className={styles.provider} title={provider === 'openai' ? 'Parsed by OpenAI' : 'Parsed on the server without an AI provider'}>
-      {provider === 'openai' ? `OpenAI${assistant.model ? ` · ${assistant.model}` : ''}` : 'Offline parser'}
-    </span>
-  )
-}
-
 export function AssistantResult({
   response,
   onDone,
-  onExample
+  onExample,
+  bare
 }: {
+  bare?: boolean
   response: AssistantResponse
   /** Called when the interaction is finished (confirmed, cancelled, or navigated away). */
   onDone: (outcome: 'saved' | 'cancelled' | 'navigated') => void
   onExample?: (text: string) => void
 }) {
+  return <div className={cx(bare && styles.bare)}>{renderResult(response, onDone, onExample)}</div>
+}
+
+function renderResult(
+  response: AssistantResponse,
+  onDone: (outcome: 'saved' | 'cancelled' | 'navigated') => void,
+  onExample?: (text: string) => void
+) {
   switch (response.type) {
     case 'proposals':
       return <ProposalReview response={response} onDone={onDone} />
@@ -65,12 +66,11 @@ export function AssistantResult({
 function ResultHeader({
   title,
   subtitle,
-  provider,
   icon = 'sparkles'
 }: {
   title: string
   subtitle?: string
-  provider: 'openai' | 'offline'
+  provider?: 'openai' | 'offline'
   icon?: 'sparkles' | 'info' | 'check'
 }) {
   const Icon = icon === 'check' ? Check : icon === 'info' ? CircleAlert : Sparkles
@@ -83,7 +83,6 @@ function ResultHeader({
         <p className={styles.resultTitle}>{title}</p>
         {subtitle ? <p className={styles.resultSubtitle}>{subtitle}</p> : null}
       </div>
-      <ProviderTag provider={provider} />
     </div>
   )
 }
@@ -143,7 +142,7 @@ function ProposalReview({
       )
       if (result.ok) {
         setApplied(result.data)
-        toast({ title: `${plural(result.data.length, 'update')} saved`, description: 'Dashboard, profiles and records are up to date.' })
+        toast({ title: `${plural(result.data.length, 'update')} saved`, description: 'Home, profiles and records are up to date.' })
       } else {
         setError(result.error)
       }
@@ -356,7 +355,7 @@ function AppliedView({
 
   return (
     <div className={styles.result} role="status">
-      <ResultHeader title={`${plural(applied.length, 'update')} saved`} subtitle="Dashboard, profile and records now reflect this." provider={provider} icon="check" />
+      <ResultHeader title={`${plural(applied.length, 'update')} saved`} subtitle="Home, profiles and records now reflect this." provider={provider} icon="check" />
       <ul className={styles.appliedList}>
         {applied.map((change) => (
           <li key={change.recordId} className={styles.applied}>

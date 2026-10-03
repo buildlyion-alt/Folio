@@ -3,19 +3,19 @@
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { MessageSquareText } from 'lucide-react'
-import { StatusText } from '@/components/students/StudentProfile'
 import { RecordList } from './RecordList'
-import { Avatar } from '@/components/ui/Misc'
 import { SortableTh, tableStyles } from '@/components/ui/Table'
-import { formatTableDate } from '@/domain/dates'
+import { formatShortDate } from '@/domain/dates'
 import type { RecordDTO } from '@/domain/dto'
-import { initials } from '@/domain/format'
-import { PACE_STATUS_LABEL } from '@/domain/pace'
+import { resultLabel } from '@/domain/pace'
 import type { RecordFilters } from '@/server/queries/records'
 import { cx } from '@/lib/cx'
 import styles from './Records.module.css'
 
 type SortKey = NonNullable<RecordFilters['sort']>
+
+/** The date a record is filed under — the same rule the server sorts by. */
+export const filedOn = (record: RecordDTO) => record.completedOn ?? record.startedOn ?? record.createdAt.slice(0, 10)
 
 export function RecordsTable({
   rows,
@@ -46,63 +46,62 @@ export function RecordsTable({
     return href({ sort: key, dir: nextDir, page: null, record: null })
   }
 
-  const th = (key: SortKey, label: string, align?: 'end') => (
-    <SortableTh label={label} active={sort === key} direction={dir} href={sortHref(key)} align={align} />
+  const th = (key: SortKey, label: string, className?: string) => (
+    <SortableTh label={label} active={sort === key} direction={dir} href={sortHref(key)} className={className} />
   )
 
   return (
     <>
       <RecordList records={rows} passMark={passMark} today={today} showStudent />
       <div className={cx(tableStyles.scroll, styles.tableWide)}>
-        <table className={cx(tableStyles.table, tableStyles.interactive)}>
+        <table className={cx(tableStyles.table, tableStyles.interactive, styles.table)}>
           <thead>
             <tr>
               {th('student', 'Student')}
               {th('subject', 'Subject')}
               {th('pace', 'PACE')}
-              {th('score', 'Score', 'end')}
-              {th('status', 'Status')}
-              <th scope="col">Started</th>
-              {th('date', 'Completed')}
-              <th scope="col">
+              {th('score', 'Result')}
+              {th('date', 'Date')}
+              <th scope="col" className={styles.noteCol}>
                 <span className="visually-hidden">Notes</span>
               </th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((record) => (
-              <tr key={record.id} className={tableStyles.rowLinkRow}>
-                <td>
-                  <Link
-                    href={href({ record: record.id })}
-                    scroll={false}
-                    replace
-                    className={cx(tableStyles.rowLink, styles.studentCell)}
-                    aria-label={`${record.studentName}, ${record.subjectName} ${record.paceNumber}, ${PACE_STATUS_LABEL[record.status]}${record.testScore !== null ? `, ${record.testScore}%` : ''}. Open record.`}
+            {rows.map((record) => {
+              const result = resultLabel(record.status, record.testScore)
+              const date = formatShortDate(filedOn(record), today)
+              return (
+                <tr key={record.id} className={tableStyles.rowLinkRow}>
+                  <td>
+                    <Link
+                      href={href({ record: record.id })}
+                      scroll={false}
+                      replace
+                      className={cx(tableStyles.rowLink, styles.studentCell)}
+                      aria-label={`${record.studentName}, ${record.subjectName} ${record.paceNumber}, ${result}, ${date}. Open record.`}
+                    >
+                      {record.studentName}
+                    </Link>
+                  </td>
+                  <td>{record.subjectName}</td>
+                  <td className="mono">{record.paceNumber}</td>
+                  <td
+                    className={cx(
+                      'tabular',
+                      record.testScore !== null && record.testScore < passMark && styles.danger,
+                      record.testScore === null && tableStyles.muted
+                    )}
                   >
-                    <Avatar initials={initials(record.studentName)} seed={record.studentId} size="sm" />
-                    {record.studentName}
-                  </Link>
-                </td>
-                <td>{record.subjectName}</td>
-                <td className="mono">{record.paceNumber}</td>
-                <td className={cx(tableStyles.num, record.testScore !== null && record.testScore < passMark && styles.danger, record.testScore === null && tableStyles.muted)}>
-                  {record.testScore !== null ? `${record.testScore}%` : '—'}
-                </td>
-                <td>
-                  <StatusText status={record.status} />
-                </td>
-                <td className={cx(tableStyles.secondary, tableStyles.nowrap, 'tabular')}>
-                  {record.startedOn ? formatTableDate(record.startedOn, today) : <span className={tableStyles.muted}>—</span>}
-                </td>
-                <td className={cx(tableStyles.nowrap, 'tabular')}>
-                  {record.completedOn ? formatTableDate(record.completedOn, today) : <span className={tableStyles.muted}>—</span>}
-                </td>
-                <td className={tableStyles.num}>
-                  {record.notes ? <MessageSquareText className={styles.noteIcon} aria-label="Has notes" strokeWidth={1.75} /> : null}
-                </td>
-              </tr>
-            ))}
+                    {result}
+                  </td>
+                  <td className={cx(tableStyles.nowrap, tableStyles.secondary, 'tabular')}>{date}</td>
+                  <td className={cx(tableStyles.num, styles.noteCol)}>
+                    {record.notes ? <MessageSquareText className={styles.noteIcon} aria-label="Has notes" strokeWidth={1.75} /> : null}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>

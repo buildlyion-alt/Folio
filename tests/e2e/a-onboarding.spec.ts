@@ -2,7 +2,7 @@ import { expect, query, test } from './support'
 
 const SUBJECTS = ['Mathematics', 'English', 'Science', 'Social Studies', 'Word Building', 'Literature']
 
-test('Flow A — create an account, set up the homeschool, enter the dashboard', async ({ page }) => {
+test('Flow A — create an account, set up the homeschool, arrive Home', async ({ page }) => {
   const email = `e2e+${Date.now()}@example.test`
 
   await page.goto('/sign-up')
@@ -51,14 +51,13 @@ test('Flow A — create an account, set up the homeschool, enter the dashboard',
 
   // 5 · Confirmation
   await expect(page.getByRole('heading', { name: 'Carter Family School is ready.' })).toBeVisible()
-  await expect(page.getByText('3', { exact: true })).toBeVisible()
-  await expect(page.getByText('18', { exact: true })).toHaveCount(2)
-  await page.getByRole('button', { name: 'Enter dashboard' }).click()
+  await expect(page.getByText('3 students and 18 current PACEs are set up.')).toBeVisible()
+  await page.getByRole('button', { name: 'Go to Home' }).click()
 
   await page.waitForURL('**/home')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Rachel')
-  await expect(page.getByRole('button', { name: /^Gabriel, Mathematics — 1084 in progress/ })).toBeVisible()
-  await expect(page.getByRole('button', { name: /^Joshua, Literature — 1094 in progress/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Gabriel, Mathematics: on 1084. Log progress.' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Joshua, Literature: on 1094. Log progress.' })).toBeVisible()
 
   const [household] = await query<{ name: string; is_demo: boolean; students: string; active: string }>(
     `select h.name, h.is_demo,

@@ -1,13 +1,13 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1-5);
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -35,23 +35,45 @@
 
 .row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: var(--space-3);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: var(--space-4);
+  align-items: end;
 }
 
-.paceField input {
-  font-size: var(--text-md);
-}
-
-.context {
-  margin-top: calc(var(--space-2) * -1);
+.warning {
+  margin-top: calc(var(--space-3) * -1);
   font-size: var(--text-sm);
-  color: var(--text-3);
+  line-height: var(--leading-sm);
+  color: var(--warning);
 }
 
-.contextWarning {
-  color: var(--warning);
+.extras {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  min-height: 28px;
+  margin-top: calc(var(--space-1) * -1);
+  font-size: var(--text-ui);
+  color: var(--text-2);
+}
+
+.extras .addNote {
+  margin-left: auto;
+}
+
+.inlineLink {
+  font-size: var(--text-ui);
+  font-weight: var(--weight-medium);
+  color: var(--signal-text);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+}
+
+.inlineLink:hover {
+  text-decoration-color: currentColor;
 }
 
 .error {
@@ -61,7 +83,7 @@
 
 .formError {
   padding: var(--space-2) var(--space-3);
-  border: 1px solid rgba(238, 106, 95, 0.28);
+  border: 1px solid var(--danger);
   border-radius: var(--radius-md);
   background: var(--danger-muted);
   font-size: var(--text-ui);
@@ -69,7 +91,7 @@
 
 .quickDates {
   display: inline-flex;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .quickDates button {
@@ -84,7 +106,7 @@
 .quickDates .quickActive {
   color: var(--text-1);
   text-decoration: underline;
-  text-decoration-color: var(--signal);
+  text-decoration-color: var(--signal-text);
   text-underline-offset: 4px;
 }
 
@@ -93,7 +115,7 @@
   align-items: center;
   align-self: flex-start;
   gap: var(--space-1-5);
-  height: 24px;
+  min-height: 28px;
   font-size: var(--text-sm);
   color: var(--text-3);
 }
@@ -107,10 +129,37 @@
   height: var(--icon-sm);
 }
 
-.hint {
+/* "Type it instead": a quiet way into the same confirmed workflow ------- */
+.switchMode {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-1-5);
+  min-height: 32px;
+  font-size: var(--text-ui);
+  font-weight: var(--weight-medium);
+  color: var(--text-2);
+}
+
+.switchMode:hover {
+  color: var(--text-1);
+}
+
+.switchMode svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--signal-text);
+}
+
+.typeMode {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
+}
+
+.typeMode > :first-child {
+  align-self: stretch;
 }
 
 /* Saved state ----------------------------------------------------------- */
@@ -118,14 +167,14 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  padding: var(--space-1) 0 var(--space-4);
+  padding: var(--space-1) 0 var(--space-5);
 }
 
 .savedMark {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-full);
   background: var(--signal);
   color: var(--on-signal);
@@ -133,20 +182,21 @@
 }
 
 .savedMark svg {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
 }
 
 .savedText {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding-top: 3px;
+  padding-top: 4px;
 }
 
 .savedTitle {
-  font-size: var(--text-md);
-  font-weight: var(--weight-medium);
+  font-size: var(--text-lg);
+  line-height: var(--leading-lg);
+  font-weight: var(--weight-semibold);
 }
 
 .savedMeta {
@@ -164,9 +214,8 @@
   justify-content: space-between;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: rgba(0, 0, 0, 0.16);
+  background: var(--surface-2);
   font-size: var(--text-ui);
   color: var(--text-2);
 }
@@ -181,9 +230,5 @@
 @media (max-width: 640px) {
   .row {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .hint {
-    display: none;
   }
 }

@@ -97,12 +97,18 @@
 .result {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-lg);
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
   background: var(--surface-1);
   animation: resultIn var(--duration-base) var(--ease-out);
+}
+
+.bare .result {
+  padding: 0;
+  border: none;
+  background: none;
 }
 
 @keyframes resultIn {
@@ -125,7 +131,7 @@
   height: 24px;
   border-radius: var(--radius-md);
   background: var(--signal-muted);
-  color: var(--signal);
+  color: var(--signal-text);
   flex-shrink: 0;
 }
 
@@ -159,20 +165,6 @@
   color: var(--text-2);
 }
 
-.provider {
-  flex-shrink: 0;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 var(--space-1-5);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--text-2);
-  white-space: nowrap;
-}
-
 .notice {
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
@@ -185,8 +177,8 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
   overflow: hidden;
 }
 
@@ -194,8 +186,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-3);
-  background: rgba(0, 0, 0, 0.14);
+  padding: var(--space-4);
 }
 
 .change + .change {
@@ -228,8 +219,8 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  font-size: var(--text-ui);
-  font-weight: var(--weight-medium);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
 }
 
 .changeSubject {
@@ -309,7 +300,7 @@
 }
 
 .signalText {
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 .applyError {
@@ -332,7 +323,7 @@
 
 .example {
   padding: var(--space-1-5) var(--space-2-5);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--field-border);
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
   color: var(--text-2);

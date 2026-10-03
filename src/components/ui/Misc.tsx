@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react'
+import Link from 'next/link'
+import { Fragment, type ReactNode } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import type { StudentStatus } from '@/domain/health'
 import { STUDENT_STATUS_LABEL } from '@/domain/health'
@@ -43,7 +44,7 @@ export function StudentStatusLabel({ status }: { status: StudentStatus }) {
   // Normal is quiet; only exceptions carry color, so they stand out in a long list.
   const tone = status === 'attention' ? 'warning' : 'neutral'
   return (
-    <span className={styles.status}>
+    <span className={cx(styles.status, tone === 'warning' && styles.statusWarning)}>
       <StatusDot tone={tone} />
       {STUDENT_STATUS_LABEL[status]}
     </span>
@@ -148,21 +149,37 @@ export function Panel({
   )
 }
 
+/** The trail back from a deep page: "Students /" or "Reports / Weekly progress". */
+export function Breadcrumb({ trail, current }: { trail: Array<{ href: string; label: string }>; current?: string }) {
+  return (
+    <nav aria-label="Breadcrumb" className={styles.breadcrumb}>
+      {trail.map((crumb) => (
+        <Fragment key={crumb.href}>
+          <Link href={crumb.href}>{crumb.label}</Link>
+          <span aria-hidden>/</span>
+        </Fragment>
+      ))}
+      {current ? <span aria-current="page">{current}</span> : null}
+    </nav>
+  )
+}
+
 export function PageHeader({
   title,
-  eyebrow,
+  breadcrumb,
   description,
   actions
 }: {
   title: ReactNode
-  eyebrow?: ReactNode
+  /** Deep pages only: the trail back to the parent list ("Students /"). */
+  breadcrumb?: Array<{ href: string; label: string }>
   description?: ReactNode
   actions?: ReactNode
 }) {
   return (
     <header className={styles.pageHeader}>
       <div className={styles.pageTitles}>
-        {eyebrow ? <div className={styles.eyebrow}>{eyebrow}</div> : null}
+        {breadcrumb?.length ? <Breadcrumb trail={breadcrumb} /> : null}
         <h1 className={styles.pageTitle}>{title}</h1>
         {description ? <p className={styles.pageDescription}>{description}</p> : null}
       </div>

@@ -1,47 +1,92 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .page > header {
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
-/* Filters --------------------------------------------------------------- */
+/* Filters: search, then child · subject · when ------------------------------ */
 .filters {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
+  flex-direction: column;
+  gap: var(--space-3);
   transition: opacity var(--duration-fast) var(--ease-out);
-}
-
-.filters > * {
-  flex: 0 1 auto;
-}
-
-.filters select {
-  min-width: 140px;
 }
 
 .filtersPending {
   opacity: 0.7;
 }
 
-/* On wide screens these wrappers vanish and every control sits in one wrapping row. */
-.filterSearchRow,
-.filterMore {
-  display: contents;
-}
-
-.filters .filterToggle {
-  display: none;
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .filterSearch {
-  flex: 1 1 220px;
-  max-width: 300px;
+  flex: 1 1 260px;
+  max-width: 360px;
+}
+
+.filterPrimary {
+  display: contents;
+}
+
+.filterPrimary select {
+  min-width: 148px;
+}
+
+.phoneToggle {
+  display: none !important;
+}
+
+.quietButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: var(--control-md);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: var(--text-ui);
+  color: var(--text-2);
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.quietButton:hover {
+  background: var(--hover);
+  color: var(--text-1);
+}
+
+.quietButton svg {
+  width: 15px;
+  height: 15px;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.moreToggle[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.filterMore {
+  display: none;
+}
+
+.filterMoreOpen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.filterMore select {
+  min-width: 148px;
 }
 
 .rangeGroup {
@@ -51,34 +96,53 @@
 }
 
 .rangeGroup input {
-  width: 96px;
+  width: 104px;
 }
 
 .rangeGroup input[type='date'] {
-  width: 142px;
+  width: 148px;
 }
 
 .rangeDash {
   color: var(--text-3);
 }
 
-.resultBar {
+/* Results -------------------------------------------------------------------- */
+.results {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40px;
-  padding: 0 var(--space-4);
-  border-bottom: 1px solid var(--border);
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.count {
   font-size: var(--text-sm);
+  line-height: var(--leading-sm);
   color: var(--text-3);
 }
 
+.surface {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+:global([data-theme='dark']) .surface {
+  border-color: var(--border);
+}
+
+.table td,
+.table th {
+  white-space: nowrap;
+}
+
 .studentCell {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
   font-weight: var(--weight-medium);
   white-space: nowrap;
+}
+
+.noteCol {
+  width: 48px;
 }
 
 .danger {
@@ -100,9 +164,7 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  height: 44px;
-  padding: 0 var(--space-4);
-  border-top: 1px solid var(--border);
+  min-height: 44px;
   font-size: var(--text-ui);
 }
 
@@ -111,6 +173,10 @@
 }
 
 .pageLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-2);
   color: var(--text-1);
   font-weight: var(--weight-medium);
 }
@@ -153,33 +219,24 @@
 .fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  gap: var(--space-4) var(--space-6);
 }
 
 .fields > div {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-4);
-}
-
-.fields > div:nth-child(even) {
-  border-left: 1px solid var(--border);
-}
-
-.fields > div:nth-child(n + 3) {
-  border-top: 1px solid var(--border);
+  gap: 2px;
 }
 
 .fields dt {
   font-size: var(--text-sm);
-  color: var(--text-2);
+  line-height: var(--leading-sm);
+  color: var(--text-3);
 }
 
 .fields dd {
-  font-size: var(--text-ui);
-  font-weight: var(--weight-medium);
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
 }
 
 .score {
@@ -195,12 +252,13 @@
 .notesLabel {
   margin-bottom: var(--space-1);
   font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--text-2);
+  line-height: var(--leading-sm);
+  color: var(--text-3);
 }
 
 .notesText {
-  font-size: var(--text-ui);
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
   white-space: pre-wrap;
 }
 
@@ -254,14 +312,13 @@
 .profileLink {
   align-self: flex-start;
   font-size: var(--text-ui);
-  color: var(--text-2);
-  text-decoration: underline;
-  text-decoration-color: var(--border-strong);
-  text-underline-offset: 3px;
+  font-weight: var(--weight-medium);
+  color: var(--signal-text);
 }
 
 .profileLink:hover {
-  color: var(--text-1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .deleteButton {
@@ -304,7 +361,8 @@
     flex-basis: 100%;
   }
 
-  .filters select {
+  .filterPrimary select,
+  .filterMore select {
     flex: 1 1 140px;
   }
 
@@ -329,30 +387,41 @@
     display: none;
   }
 
-  /* Phones: search stays visible; the other filters open from a button. */
-  .filterSearchRow {
-    display: flex;
-    flex-basis: 100%;
-    gap: var(--space-2);
+  /* Phones: the search box stays; every filter opens from one button. */
+  .filterBar {
+    flex-wrap: nowrap;
   }
 
-  .filterSearchRow .filterSearch {
+  .filterSearch {
     flex: 1 1 auto;
   }
 
-  .filters .filterToggle {
-    display: inline-flex;
+  .phoneToggle {
+    display: inline-flex !important;
     flex-shrink: 0;
   }
 
-  .filterMore {
+  .filterPrimary,
+  .filterMore,
+  .filterMoreOpen,
+  .moreToggle {
     display: none;
   }
 
-  .filterMoreOpen {
+  .filtersOpen .filterBar {
+    flex-wrap: wrap;
+  }
+
+  .filtersOpen .filterPrimary,
+  .filtersOpen .filterMore {
     display: flex;
     flex-wrap: wrap;
     flex-basis: 100%;
     gap: var(--space-2);
+  }
+
+  .filtersOpen .filterPrimary select,
+  .filtersOpen .filterMore select {
+    flex: 1 1 100%;
   }
 }

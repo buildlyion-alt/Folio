@@ -178,7 +178,7 @@ async function resolveUpdates(parsed: ParsedCommand, { db, household, ctx, provi
     }
 
     if (change.testScore !== null && change.testScore < household.passMark) {
-      change.warnings.push(`Below the ${household.passMark}% pass mark — it will be flagged for review.`)
+      change.warnings.push(`Below the ${household.passMark}% pass mark — it will show as needing a look.`)
     }
     if (update.status === 'completed' && change.testScore === null) {
       change.warnings.push('No test score mentioned.')

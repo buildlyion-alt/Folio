@@ -77,24 +77,29 @@ p {
   text-wrap: pretty;
 }
 
+input,
+textarea {
+  caret-color: var(--signal-text);
+}
+
 ::selection {
-  background: rgba(203, 254, 0, 0.24);
+  background: var(--tint);
   color: var(--text-1);
 }
 
-/* Keyboard focus is always visible: a solid signal ring. Pointer clicks don't show it. */
+/* Keyboard focus is always visible: a solid green ring. Pointer clicks don't show it. */
 :focus {
   outline: none;
 }
 
 :focus-visible {
-  outline: 2px solid var(--signal);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3a3a3a transparent;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
 /* Numbers that get compared — PACEs, scores, counts — align in columns. */
@@ -149,15 +154,16 @@ p {
   }
 }
 
-/* Printing (reports): ink-friendly light rendering, app chrome hidden. */
+/* Printing (reports): ink-friendly light rendering whatever the theme, app chrome hidden. */
 @media print {
-  :root {
+  :root,
+  :root[data-theme='dark'] {
     color-scheme: light;
     --bg-app: #ffffff;
-    --bg-sidebar: #ffffff;
     --surface-1: #ffffff;
-    --surface-2: #f4f4f4;
-    --surface-3: #ececec;
+    --surface-2: #f4f6f4;
+    --surface-3: #eceeec;
+    --bg-elevated: #ffffff;
     --text-1: #111111;
     --text-2: #3d3d3d;
     --text-3: #5c5c5c;
@@ -165,9 +171,8 @@ p {
     --border-subtle: rgba(0, 0, 0, 0.08);
     --border-strong: rgba(0, 0, 0, 0.2);
     --signal: #111111;
+    --signal-text: #111111;
     --signal-muted: rgba(0, 0, 0, 0.06);
-    --chart-bar: #9a9a9a;
-    --chart-bar-quiet: #d6d6d6;
     --warning: #8a5a00;
     --danger: #b3261e;
   }

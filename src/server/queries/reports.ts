@@ -6,7 +6,7 @@ import {
   formatLongDate,
   formatMonth,
   formatRange,
-  formatTableDate,
+  formatShortDate,
   isIsoDate,
   minDate,
   periodRange,
@@ -174,7 +174,7 @@ export async function buildReport(
 
   const name = (r: { firstName: string }) => r.firstName
   const scoreText = (n: number | null) => formatScore(n)
-  const date = (d: string | null) => (d ? formatTableDate(d, today) : '—')
+  const date = (d: string | null) => (d ? formatShortDate(d, today) : '—')
   const avg = (list: typeof completed) => averageScore(list.map((r) => r.testScore))
 
   const kpis: ReportSection = {

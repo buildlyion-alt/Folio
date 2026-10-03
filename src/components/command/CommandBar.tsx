@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useId, useMemo, useRef, useState, useTransition, type KeyboardEvent } from 'react'
-import { ArrowLeft, BookOpen, CornerDownLeft, FileText, Plus, Search, Sparkles, UserPlus, type LucideIcon } from 'lucide-react'
+import { ArrowLeft, BookOpen, CornerDownLeft, FileText, Plus, Search, Settings, Sparkles, UserPlus, type LucideIcon } from 'lucide-react'
 import { interpretText, search } from '@/app/actions/assistant'
 import { AssistantResult } from '@/components/assistant/AssistantResult'
 import { useLogProgress } from '@/components/log/LogProgressProvider'
 import { useAppData } from '@/components/providers/AppData'
-import { NAV_GROUPS } from '@/components/shell/nav'
+import { NAV_ITEMS } from '@/components/shell/nav'
 import { Avatar, Kbd } from '@/components/ui/Misc'
 import { formatShortDate } from '@/domain/dates'
 import { PACE_STATUS_LABEL } from '@/domain/pace'
@@ -95,7 +95,7 @@ export function CommandBar({ open, initialQuery, onClose }: { open: boolean; ini
   const items = useMemo<Item[]>(() => {
     const q = query.trim().toLowerCase()
     const list: Item[] = []
-    const pages = NAV_GROUPS.flatMap((g) => g.items)
+    const pages = [...NAV_ITEMS, { href: '/settings', label: 'Settings', icon: Settings }]
 
     if (!q) {
       list.push(

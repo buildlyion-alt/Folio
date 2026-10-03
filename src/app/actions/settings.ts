@@ -2,21 +2,11 @@
 
 import { revalidatePath } from 'next/cache'
 import * as z from 'zod'
-import { emailSchema, fieldErrors, householdSettingsSchema, subjectNameSchema, termSchema } from '@/domain/validation'
+import { emailSchema, fieldErrors, householdSettingsSchema, subjectNameSchema } from '@/domain/validation'
 import { getDb } from '@/server/db'
 import { getHouseholdContext } from '@/server/auth/context'
 import { ProgressError } from '@/server/services/progress'
-import {
-  changePassword,
-  createSubject,
-  createTerm,
-  deleteTerm,
-  renameSubject,
-  setSubjectArchived,
-  updateAccount,
-  updateHouseholdSettings,
-  updateTerm
-} from '@/server/services/settings'
+import { changePassword, createSubject, renameSubject, setSubjectArchived, updateAccount, updateHouseholdSettings } from '@/server/services/settings'
 
 type Result = { ok: true } | { ok: false; error: string; fields?: Record<string, string> }
 
@@ -66,22 +56,6 @@ export async function archiveSubjectAction(subjectId: string, archived: boolean)
   const ctx = await getHouseholdContext()
   if (!ctx) return SIGNED_OUT
   return run(() => setSubjectArchived(getDb(), ctx.household.id, z.uuid().parse(subjectId), archived))
-}
-
-export async function saveTerm(termId: string | null, input: z.input<typeof termSchema>): Promise<Result> {
-  const ctx = await getHouseholdContext()
-  if (!ctx) return SIGNED_OUT
-  const parsed = termSchema.safeParse(input)
-  if (!parsed.success) return { ok: false, error: 'Check the term dates.', fields: fieldErrors(parsed.error) }
-  return run(() =>
-    termId ? updateTerm(getDb(), ctx.household.id, z.uuid().parse(termId), parsed.data) : createTerm(getDb(), ctx.household.id, parsed.data)
-  )
-}
-
-export async function removeTerm(termId: string): Promise<Result> {
-  const ctx = await getHouseholdContext()
-  if (!ctx) return SIGNED_OUT
-  return run(() => deleteTerm(getDb(), ctx.household.id, z.uuid().parse(termId)))
 }
 
 const accountSchema = z.object({

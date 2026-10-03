@@ -1,35 +1,25 @@
 'use client'
 
 import { useState, useTransition, type FormEvent, type ReactNode } from 'react'
-import { Archive, ArchiveRestore, Check, Pencil, Plus, Trash, X } from 'lucide-react'
-import {
-  addSubject,
-  archiveSubjectAction,
-  removeTerm,
-  renameSubjectAction,
-  saveAccount,
-  saveHousehold,
-  savePassword,
-  saveTerm
-} from '@/app/actions/settings'
+import { Archive, ArchiveRestore, Check, Pencil, Plus, X } from 'lucide-react'
+import { addSubject, archiveSubjectAction, renameSubjectAction, saveAccount, saveHousehold, savePassword } from '@/app/actions/settings'
 import { signOut } from '@/app/actions/auth'
 import { Button } from '@/components/ui/Button'
-import { ConfirmDialog } from '@/components/ui/Dialog'
+import { ChoiceGroup } from '@/components/ui/Choice'
 import { Field, Input, Select } from '@/components/ui/Field'
 import { Badge } from '@/components/ui/Misc'
 import { useToast } from '@/components/ui/Toast'
-import { formatShortDate } from '@/domain/dates'
 import type { HouseholdDTO } from '@/domain/dto'
 import { plural } from '@/domain/format'
+import type { ThemePreference } from '@/lib/theme'
+import { useThemePreference } from '@/lib/useTheme'
 import styles from './Settings.module.css'
 
 interface Props {
   household: HouseholdDTO
   subjects: Array<{ id: string; name: string; archived: boolean; students: number }>
-  terms: Array<{ id: string; name: string; startsOn: string; endsOn: string }>
   user: { name: string; email: string }
   timezones: string[]
-  today: string
   assistant: { enabled: boolean; model: string | null }
 }
 
@@ -52,9 +42,9 @@ export function SettingsView(props: Props) {
     <div className={styles.page}>
       <HouseholdSection household={props.household} timezones={props.timezones} />
       <SubjectsSection subjects={props.subjects} />
-      <TermsSection terms={props.terms} today={props.today} />
+      <AppearanceSection />
       <AccountSection user={props.user} />
-      <Section id="assistant" title="AI Assistant" description="How natural-language entries are read.">
+      <Section id="typed-entries" title="Typed entries" description="How Folio reads sentences like “Gabriel finished Math 1084 with 94%”.">
         <div className={styles.card}>
           <p className={styles.statusLine}>
             <span className={props.assistant.enabled ? styles.dotOn : styles.dotOff} aria-hidden />
@@ -90,7 +80,7 @@ function HouseholdSection({ household, timezones }: { household: HouseholdDTO; t
       const result = await saveHousehold({ ...values, schoolYearStart: values.schoolYearStart || null })
       if (result.ok) {
         setErrors({})
-        toast({ title: 'Homeschool settings saved', description: 'Dashboards and reports use the new settings.' })
+        toast({ title: 'Homeschool settings saved', description: 'Home, profiles and reports use the new settings.' })
       } else {
         setErrors(result.fields ?? { _form: result.error })
       }
@@ -127,7 +117,7 @@ function HouseholdSection({ household, timezones }: { household: HouseholdDTO; t
         </div>
         {errors._form ? <p className={styles.error}>{errors._form}</p> : null}
         <div className={styles.actions}>
-          <Button type="submit" variant="primary" loading={pending}>
+          <Button type="submit" variant="ink" loading={pending}>
             Save changes
           </Button>
         </div>
@@ -194,7 +184,7 @@ function SubjectsSection({ subjects }: { subjects: Props['subjects'] }) {
                       if (e.key === 'Escape') setEditing(null)
                     }}
                   />
-                  <Button size="sm" variant="primary" iconOnly icon={Check} aria-label="Save name" onClick={rename} loading={pending} />
+                  <Button size="sm" variant="ink" iconOnly icon={Check} aria-label="Save name" onClick={rename} loading={pending} />
                   <Button size="sm" variant="ghost" iconOnly icon={X} aria-label="Cancel" onClick={() => setEditing(null)} />
                 </>
               ) : (
@@ -232,94 +222,24 @@ function SubjectsSection({ subjects }: { subjects: Props['subjects'] }) {
   )
 }
 
-function TermsSection({ terms, today }: { terms: Props['terms']; today: string }) {
-  const toast = useToast()
-  const blank = { id: null as string | null, name: '', startsOn: '', endsOn: '' }
-  const [draft, setDraft] = useState<typeof blank | null>(null)
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [confirmDelete, setConfirmDelete] = useState<Props['terms'][number] | null>(null)
-  const [pending, startTransition] = useTransition()
+const THEME_OPTIONS: Array<{ value: ThemePreference; label: string }> = [
+  { value: 'system', label: 'Match device' },
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' }
+]
 
-  function submit(event: FormEvent) {
-    event.preventDefault()
-    if (!draft) return
-    startTransition(async () => {
-      const result = await saveTerm(draft.id, { name: draft.name, startsOn: draft.startsOn, endsOn: draft.endsOn })
-      if (result.ok) {
-        toast({ title: draft.id ? 'Term updated' : 'Term added', description: 'Use it on the Progress page and in reports.' })
-        setDraft(null)
-        setErrors({})
-      } else setErrors(result.fields ?? { _form: result.error })
-    })
-  }
-
+function AppearanceSection() {
+  const [preference, setPreference] = useThemePreference()
   return (
-    <Section id="terms" title="Terms" description="Optional. Name your terms to see “this term” on the Progress page.">
+    <Section id="appearance" title="Appearance" description="Folio follows your device’s light or dark setting unless you choose one here.">
       <div className={styles.card}>
-        {terms.length ? (
-          <ul className={styles.list}>
-            {terms.map((term) => (
-              <li key={term.id} className={styles.listRow}>
-                <span className={styles.listName}>
-                  {term.name}
-                  {term.startsOn <= today && term.endsOn >= today ? <Badge tone="signal">Current</Badge> : null}
-                </span>
-                <span className={styles.listMeta}>
-                  {formatShortDate(term.startsOn, today)} – {formatShortDate(term.endsOn, today)}
-                </span>
-                <Button size="sm" variant="ghost" iconOnly icon={Pencil} aria-label={`Edit ${term.name}`} onClick={() => setDraft({ ...term })} />
-                <Button size="sm" variant="ghost" iconOnly icon={Trash} aria-label={`Delete ${term.name}`} onClick={() => setConfirmDelete(term)} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className={styles.help}>No terms yet. Progress and reports use weeks, months and the school year.</p>
-        )}
-        {draft ? (
-          <form className={styles.termForm} onSubmit={submit} noValidate>
-            <Field label="Term name" error={errors.name}>
-              {(p) => <Input {...p} value={draft.name} placeholder="Fall term" maxLength={40} onChange={(e) => setDraft({ ...draft, name: e.target.value })} autoFocus />}
-            </Field>
-            <Field label="Starts" error={errors.startsOn}>
-              {(p) => <Input {...p} type="date" value={draft.startsOn} onChange={(e) => setDraft({ ...draft, startsOn: e.target.value })} />}
-            </Field>
-            <Field label="Ends" error={errors.endsOn}>
-              {(p) => <Input {...p} type="date" value={draft.endsOn} onChange={(e) => setDraft({ ...draft, endsOn: e.target.value })} />}
-            </Field>
-            <div className={styles.termActions}>
-              <Button variant="ghost" onClick={() => setDraft(null)} disabled={pending}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="primary" loading={pending}>
-                {draft.id ? 'Save term' : 'Add term'}
-              </Button>
-            </div>
-            {errors._form ? <p className={styles.error}>{errors._form}</p> : null}
-          </form>
-        ) : (
-          <div>
-            <Button icon={Plus} onClick={() => setDraft(blank)}>
-              Add term
-            </Button>
-          </div>
-        )}
+        <div className={styles.themeRow}>
+          <span className={styles.themeLabel}>
+            Theme
+          </span>
+          <ChoiceGroup label="Theme" variant="segmented" value={preference} onChange={setPreference} options={THEME_OPTIONS} />
+        </div>
       </div>
-      <ConfirmDialog
-        open={Boolean(confirmDelete)}
-        title={`Delete ${confirmDelete?.name ?? 'term'}?`}
-        description="The term is removed from Progress and report options. No PACE records are affected."
-        confirmLabel="Delete term"
-        pending={pending}
-        onClose={() => setConfirmDelete(null)}
-        onConfirm={() =>
-          startTransition(async () => {
-            if (!confirmDelete) return
-            const result = await removeTerm(confirmDelete.id)
-            if (result.ok) toast({ title: 'Term deleted' })
-            setConfirmDelete(null)
-          })
-        }
-      />
     </Section>
   )
 }

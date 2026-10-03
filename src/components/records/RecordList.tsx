@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { MessageSquareText } from 'lucide-react'
-import { formatTableDate } from '@/domain/dates'
+import { formatShortDate } from '@/domain/dates'
 import type { RecordDTO } from '@/domain/dto'
-import { PACE_STATUS_LABEL } from '@/domain/pace'
+import { resultLabel } from '@/domain/pace'
 import { cx } from '@/lib/cx'
 import styles from './RecordList.module.css'
 
@@ -23,24 +23,27 @@ export function RecordList({ records, passMark, today, showStudent }: { records:
   return (
     <ul className={styles.list}>
       {records.map((record) => {
-        const date = record.completedOn ?? record.startedOn
+        const date = record.completedOn ?? record.startedOn ?? record.createdAt.slice(0, 10)
+        const result = resultLabel(record.status, record.testScore)
         return (
           <li key={record.id}>
-            <Link href={hrefFor(record.id)} scroll={false} replace className={styles.row}>
+            <Link
+              href={hrefFor(record.id)}
+              scroll={false}
+              replace
+              className={styles.row}
+              aria-label={`${showStudent ? `${record.studentName}, ` : ''}${record.subjectName} ${record.paceNumber}, ${result}, ${formatShortDate(date, today)}. Open record.`}
+            >
               <span className={styles.main}>
                 <span className={styles.title}>
-                  {showStudent ? <span className={styles.student}>{record.studentName} · </span> : null}
+                  {showStudent ? <span className={styles.student}>{record.studentName}</span> : null}
                   {record.subjectName} <span className="mono">{record.paceNumber}</span>
-                  {record.notes ? <MessageSquareText className={styles.note} aria-label="Has notes" strokeWidth={1.75} /> : null}
+                  {record.notes ? <MessageSquareText className={styles.note} aria-hidden strokeWidth={1.75} /> : null}
                 </span>
-                <span className={styles.meta}>
-                  <span className={cx(styles.dot, styles[`dot_${record.status}`])} aria-hidden />
-                  {PACE_STATUS_LABEL[record.status]}
-                  {date ? ` · ${record.status === 'completed' ? '' : 'since '}${formatTableDate(date, today)}` : ''}
-                </span>
+                <span className={styles.meta}>{formatShortDate(date, today)}</span>
               </span>
               <span className={cx(styles.score, record.testScore !== null && record.testScore < passMark && styles.danger, record.testScore === null && styles.muted)}>
-                {record.testScore !== null ? `${record.testScore}%` : '—'}
+                {result}
               </span>
             </Link>
           </li>

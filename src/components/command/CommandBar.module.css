@@ -17,7 +17,7 @@
 }
 
 .dialog::backdrop {
-  background: rgba(8, 8, 8, 0.6);
+  background: var(--scrim);
 }
 
 @keyframes barIn {
@@ -204,7 +204,7 @@
   height: 36px;
   padding: 0 var(--space-4);
   border-top: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--surface-2);
   font-size: var(--text-sm);
   color: var(--text-3);
   flex-shrink: 0;

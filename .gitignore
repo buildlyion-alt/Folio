@@ -45,3 +45,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# impeccable review captures (regenerated per review)
+/.impeccable/review/

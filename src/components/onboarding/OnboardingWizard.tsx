@@ -176,11 +176,10 @@ function Wizard({ userId, userName }: WizardProps) {
             {step === 0 ? (
               <>
                 <StepHeading
-                  step={0}
                   title="Let’s set up your homeschool."
                   lede="Folio keeps every child’s PACE progress, test scores and records in one place. Setup takes about two minutes."
                 />
-                <Field label="Homeschool name" hint="Shown on reports and at the top of your dashboard.">
+                <Field label="Homeschool name" hint="Shown on reports and at the top of every page.">
                   {(p) => (
                     <Input
                       {...p}
@@ -199,7 +198,6 @@ function Wizard({ userId, userName }: WizardProps) {
             {step === 1 ? (
               <>
                 <StepHeading
-                  step={1}
                   title="Who’s learning at home?"
                   lede="Add each child. A first name is all Folio needs — you can paste several names at once."
                 />
@@ -210,7 +208,6 @@ function Wizard({ userId, userName }: WizardProps) {
             {step === 2 ? (
               <>
                 <StepHeading
-                  step={2}
                   title="Which subjects are they taking?"
                   lede="The A.C.E. core subjects are selected. Turn off any you don’t use, or add your own."
                 />
@@ -221,7 +218,6 @@ function Wizard({ userId, userName }: WizardProps) {
             {step === 3 ? (
               <>
                 <StepHeading
-                  step={3}
                   title="Where is everyone right now?"
                   lede="Type the PACE number each child is working on. Leave a cell empty if they don’t take that subject. Tab moves across, Enter moves down."
                 />
@@ -271,10 +267,9 @@ function Wizard({ userId, userName }: WizardProps) {
   )
 }
 
-function StepHeading({ step, title, lede }: { step: number; title: string; lede: string }) {
+function StepHeading({ title, lede }: { title: string; lede: string }) {
   return (
     <div className={styles.heading}>
-      <span className={styles.stepLabel}>{STEPS[step]}</span>
       <h1 className={styles.title}>{title}</h1>
       <p className={styles.lede}>{lede}</p>
     </div>
@@ -302,27 +297,13 @@ function Done({
         </span>
         <h1 className={styles.title}>{householdName} is ready.</h1>
         <p className={styles.lede}>
-          From here, log completed PACEs and test scores as they happen — from the form, or by simply telling
-          Folio what happened.
+          {plural(students, 'student')} and {plural(enrollments, 'current PACE')} are set up. From here, log completed PACEs and
+          test scores as they happen — from the form, or by telling Folio what happened.
         </p>
-      </div>
-      <div className={styles.stats}>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>{students}</span>
-          <span className={styles.statLabel}>{plural(students, 'student').replace(/^\d+ /, '')}</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>{enrollments}</span>
-          <span className={styles.statLabel}>active subjects</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>{enrollments}</span>
-          <span className={styles.statLabel}>current PACEs</span>
-        </div>
       </div>
       <div>
         <Button variant="primary" size="lg" onClick={onEnter} loading={entering} trailingIcon={ArrowRight} autoFocus>
-          Enter dashboard
+          Go to Home
         </Button>
       </div>
     </div>

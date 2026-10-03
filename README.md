@@ -1,38 +1,42 @@
 # Folio
 
 Folio is a record-keeping web app for homeschool families using the A.C.E. curriculum. It tracks every child's
-current PACE in every subject, PACE Test scores and completions, and turns them into a live dashboard, per-student
-progress, searchable records and printable reports. Progress can be logged with a quick form or by simply telling
-Folio what happened — _“Gabriel completed Math 1084 today with 94% and started 1085”_ — and confirming the
-changes it proposes.
+current PACE in every subject, PACE Test scores and completions, and keeps them in one calm place: what everyone is
+working on, each child's results, searchable records and printable reports. Progress can be logged with a quick form
+or by simply telling Folio what happened — _“Gabriel completed Math 1084 today with 94% and started 1085”_ — and
+confirming the changes it proposes.
+
+Four destinations — **Home**, **Students**, **Records**, **Reports** — and one primary action everywhere: **Log
+progress**.
 
 ## Features
 
 - **Accounts and households.** Email/password sign-up, database-backed sessions, and a five-step setup: homeschool
   name, students (paste a whole list), subjects (the six A.C.E. core subjects preselected), everyone's current PACE
   in a keyboard-friendly grid, and a confirmation summary.
-- **Home dashboard.** Weekly numbers, a progress chart with every student's current PACE per subject (click a
-  cell to log), what needs attention (scores below the pass mark, PACEs running long, subjects with nothing in
-  progress) and recent activity.
-- **Log progress anywhere.** One dialog, prefilled from context: student, subject, PACE, status, test score, date
-  and notes. Saving updates the canonical record everywhere and offers to start the next PACE.
-- **AI assistant.** Natural-language entries become proposed changes that are checked against your records and
-  shown for review — nothing is written until you confirm, edit or cancel. It also answers questions
-  (“Who completed PACEs this week?”, “Show scores below 80%”) and opens reports. Works with OpenAI or a built-in
-  offline parser.
+- **Home.** A greeting, one line of numbers (students, PACEs completed this week, average score), and every child's
+  current PACE in each subject in one table. Select a cell to log that PACE; a short “Needs a look” list explains the
+  few that need attention (a score below the pass mark, a PACE running long).
+- **Log progress anywhere.** One dialog, prefilled from context: student, subject, PACE, what happened (completed or
+  started) and the test score; the date and a note are a click away. Saving updates the canonical record everywhere
+  and offers to start the next PACE. From Home it takes one click and two keys.
+- **Typed entries.** “Tell Folio what happened” on Home, in the log dialog and in the command bar. Sentences become
+  proposed changes, checked against your records and shown for review — nothing is written until you confirm, edit
+  or cancel. Works with OpenAI or a built-in offline parser.
 - **Command bar.** <kbd>⌘K</kbd> / <kbd>Ctrl K</kbd> (or <kbd>/</kbd>) searches students, subjects and PACE
-  numbers, jumps to pages, and passes anything else to the assistant.
-- **Students.** Directory with status and current PACEs; profiles with a PACE strip per subject (levels, scores,
-  gaps to backfill, the next PACE), full history and an activity trail.
-- **Records.** Every PACE record with search, filters (student, subject, status, date, PACE and score ranges),
+  numbers, jumps to pages, and passes anything else on as a typed entry.
+- **Students.** A directory with each child's current PACEs; a profile per child with every subject's current PACE
+  and last score (open a subject for its dated results) and their recent results.
+- **Records.** Every PACE record with search, the three everyday filters (student, subject, and when — this week,
+  last month, this school year…) and more behind “More filters” (status, exact dates, PACE and score ranges),
   sorting, pagination and CSV export. Records can be inspected, edited and deleted with confirmation; the audit
   trail keeps every change.
-- **Progress.** Completions per week against the household's target, completed vs. expected per student, by-subject
-  averages, school-year pace and low scores — for this week, this month, last month, a term or the school year.
 - **Reports.** Weekly, monthly, student, subject, test score history, completed PACEs and academic summary —
-  generated from real records, laid out for printing or saving as PDF, and downloadable as CSV.
-- **Designed for phones too.** A dedicated mobile layout with bottom navigation, full-screen dialogs and touch-sized
-  controls.
+  generated from real records, opened with sensible defaults, laid out for printing or saving as PDF, and
+  downloadable as CSV.
+- **Light and dark.** Follows the device by default, with a choice in Settings or the account menu.
+- **Designed for phones too.** A dedicated mobile layout with a bottom tab bar (Log in the middle), full-screen
+  dialogs and touch-sized controls.
 
 ## Quick start
 
@@ -68,8 +72,8 @@ inferred when omitted, and anything unusual (an overwrite, a score below the pas
 one, an unknown student) is flagged. The parent sees exactly what will change and confirms; only then does Folio
 write, through the same validated path as the form, marked “via assistant” in the history.
 
-Without a key — or if the provider fails — the deterministic offline parser handles the same kinds of sentences,
-and the UI says which one was used. The API key is read only on the server and never reaches the browser.
+Without a key — or if the provider fails — the deterministic offline parser handles the same kinds of sentences;
+Settings shows which one is active. The API key is read only on the server and never reaches the browser.
 
 ## Scripts
 
@@ -104,18 +108,27 @@ The integration helpers refuse to run against a database whose name doesn't end 
 **End-to-end tests** build the app, start it against the test database (re-migrated and re-seeded first), and walk
 through the core flows in a real browser:
 
-- **A** — sign up, complete onboarding, land on the dashboard.
-- **B** — log Gabriel's Mathematics 1084 as completed at 94%, start 1085, and see it on the dashboard, in records
-  and in the weekly report.
-- **C** — Students → Gabriel → Mathematics history → inspect 1084; edit and delete safeguards.
-- **D** — “Gabriel completed Math 1085 with 91%” in the assistant → review → confirm → verified in the database.
-- **E** — records filtered to Gabriel and Mathematics.
-- **F** — on a phone-sized screen, sign in and log a completed PACE.
+- **A** — sign up, complete onboarding, arrive on Home.
+- **B** — from Home, select Gabriel's Mathematics cell, type 94 and press Enter (timed under ten seconds); start
+  1085; see it on Home, in Records and in the weekly report.
+- **C** — Students → Gabriel → Mathematics → inspect 1084; edit and delete safeguards; Log progress on the profile
+  is prefilled with Gabriel.
+- **D** — “Gabriel completed Math 1085 with 91%” typed on Home → review → confirm → verified in the database; the
+  same entry is available inside Log progress.
+- **E** — Records filtered to Gabriel and Mathematics, then to last month.
+- **F** — on a phone-sized screen, sign in, log a completed PACE from the Log tab, start the next one, and check
+  that every page fits.
 
 ```bash
 npx playwright install chromium     # once, or set PLAYWRIGHT_CHROMIUM to an existing Chromium
 npm run test:e2e                    # E2E_DATABASE_URL overrides the folio_test default
 ```
+
+## Design
+
+`PRODUCT.md` records who Folio is for and the three questions every screen answers; `DESIGN.md` (with
+`.impeccable/design.json`) records the visual system: the green palette and its light and dark themes, type roles,
+spacing, components and the rules that keep the interface calm. All colors are tokens in `src/styles/tokens.css`.
 
 ## Architecture
 
@@ -124,8 +137,9 @@ for validation, CSS Modules on a small set of design tokens, and Lucide icons.
 
 ```
 src/
-  app/              routes: (auth) sign-in/up, onboarding, (app) home, students, progress, records, reports,
-                    assistant, settings; server actions in app/actions; CSV route handlers
+  app/              routes: (auth) sign-in/up, onboarding, (app) home, students, records, reports, settings
+                    (the old /progress and /assistant URLs redirect to Home); server actions in app/actions;
+                    CSV route handlers
   components/       UI primitives (ui/), the app shell, dialogs and feature components
   domain/           pure logic shared by server and client: dates, PACE numbering, on-track signals,
                     validation schemas, DTO types
@@ -133,7 +147,7 @@ src/
     auth/           password hashing, sessions, cookies, the session → household context
     db/             schema, client
     services/       every write: progress (the single write path), onboarding, students, settings, assistant
-    queries/        every read: overview, records, activity, progress analytics, reports, search
+    queries/        every read: overview, records, activity, reports, search
     assistant/      parsers (OpenAI and offline), matching, resolution into proposed changes
   proxy.ts          optimistic redirect for signed-out visitors (Next.js 16's replacement for middleware)
 drizzle/            SQL migrations
@@ -144,7 +158,7 @@ tests/              unit, integration and e2e
 **One record, everywhere.** Each student–subject–PACE has exactly one row in `pace_records`. The form, the
 assistant, onboarding and edits all go through `recordProgress` / `updatePaceRecord`, which enforce the rules
 (no future dates, completion not before the start, scores only on completed PACEs) and append an event to
-`progress_events` with the previous state. Dashboards, profiles, records and reports all read those two tables, so
+`progress_events` with the previous state. Home, profiles, records and reports all read those two tables, so
 there's nothing to keep in sync.
 
 **On track.** With the household's target (12 PACEs per subject per year by default, over 36 school weeks), a PACE

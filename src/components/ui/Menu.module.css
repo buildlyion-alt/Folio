@@ -13,9 +13,9 @@
   z-index: var(--z-popover);
   min-width: 200px;
   padding: var(--space-1);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--surface-2);
+  background: var(--bg-elevated);
   box-shadow: var(--shadow-float);
   animation: menuIn var(--duration-base) var(--ease-out);
 }

@@ -1,23 +1,31 @@
 'use client'
 
 import { useRef, useState, useTransition, type FormEvent } from 'react'
-import { Check, CornerDownLeft, NotebookPen, Play } from 'lucide-react'
+import { Check, NotebookPen, Play, Sparkles } from 'lucide-react'
 import { logProgress, startPace, type LoggedProgress } from '@/app/actions/progress'
+import { AssistantComposer } from '@/components/assistant/AssistantComposer'
 import { useAppData } from '@/components/providers/AppData'
 import { Button } from '@/components/ui/Button'
 import { ChoiceGroup } from '@/components/ui/Choice'
 import { Dialog } from '@/components/ui/Dialog'
 import { Field, Input, Select, Textarea } from '@/components/ui/Field'
-import { Avatar, Kbd } from '@/components/ui/Misc'
+import { Avatar } from '@/components/ui/Misc'
 import { useToast } from '@/components/ui/Toast'
 import { addDays, formatShortDate, type IsoDate } from '@/domain/dates'
 import type { RosterStudentDTO } from '@/domain/dto'
-import { paceLevel, PACE_STATUS_LABEL, type PaceStatus } from '@/domain/pace'
+import { paceLevel } from '@/domain/pace'
 import { cx } from '@/lib/cx'
 import type { LogPrefill } from './LogProgressProvider'
 import styles from './LogProgress.module.css'
 
 type RosterSubject = RosterStudentDTO['subjects'][number]
+/** The two things that happen to a PACE day to day. Resetting one lives in the record editor. */
+type Happened = 'completed' | 'active'
+
+const HAPPENED_OPTIONS: Array<{ value: Happened; label: string }> = [
+  { value: 'completed', label: 'Completed' },
+  { value: 'active', label: 'Started' }
+]
 
 function defaultPaceFor(subject: RosterSubject | null): string {
   if (!subject) return ''
@@ -26,19 +34,13 @@ function defaultPaceFor(subject: RosterSubject | null): string {
   return ''
 }
 
-function defaultStatusFor(subject: RosterSubject | null, pace: string): PaceStatus {
+function defaultHappenedFor(subject: RosterSubject | null, pace: string): Happened {
   // A subject with nothing in progress is usually being started, not finished.
   if (subject && !subject.current && subject.lastCompleted && Number(pace) === subject.lastCompleted.paceNumber + 1) {
     return 'active'
   }
   return 'completed'
 }
-
-const STATUS_OPTIONS: Array<{ value: PaceStatus; label: string }> = [
-  { value: 'completed', label: 'Completed' },
-  { value: 'active', label: 'Active' },
-  { value: 'not_started', label: 'Not started' }
-]
 
 export function LogProgressDialog({
   open,
@@ -56,13 +58,17 @@ export function LogProgressDialog({
   const initialSubject =
     roster.find((s) => s.id === initialStudent)?.subjects.find((s) => s.subjectId === prefill.subjectId) ?? null
   const initialPace = prefill.paceNumber ? String(prefill.paceNumber) : defaultPaceFor(initialSubject)
+  const initialHappened: Happened =
+    prefill.status === 'active' ? 'active' : prefill.status === 'completed' ? 'completed' : defaultHappenedFor(initialSubject, initialPace)
 
+  const [mode, setMode] = useState<'form' | 'type'>('form')
   const [studentId, setStudentId] = useState<string | null>(initialStudent)
   const [subjectId, setSubjectId] = useState<string | null>(initialSubject?.subjectId ?? null)
   const [pace, setPace] = useState(initialPace)
-  const [status, setStatus] = useState<PaceStatus>(prefill.status ?? defaultStatusFor(initialSubject, initialPace))
+  const [happened, setHappened] = useState<Happened>(initialHappened)
   const [score, setScore] = useState('')
   const [date, setDate] = useState<IsoDate>(today)
+  const [showDate, setShowDate] = useState(false)
   const [notes, setNotes] = useState('')
   const [showNotes, setShowNotes] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -97,30 +103,17 @@ export function LogProgressDialog({
     setErrors({})
     const nextPace = defaultPaceFor(next)
     setPace(nextPace)
-    const nextStatus = defaultStatusFor(next, nextPace)
-    setStatus(nextStatus)
+    const nextHappened = defaultHappenedFor(next, nextPace)
+    setHappened(nextHappened)
     // Straight to the score: the most common entry is "completed, scored N".
-    requestAnimationFrame(() => (nextStatus === 'completed' ? scoreRef.current : paceRef.current)?.focus())
+    requestAnimationFrame(() => (nextHappened === 'completed' ? scoreRef.current : paceRef.current)?.focus())
   }
 
-  const recordContext = (() => {
-    if (!subject || !paceNumber) return null
-    if (subject.current?.paceNumber === paceNumber) {
-      return {
-        tone: 'neutral' as const,
-        text: subject.current.startedOn
-          ? `Active since ${formatShortDate(subject.current.startedOn, today)}`
-          : 'Active · start date not recorded'
-      }
-    }
-    if (subject.lastCompleted?.paceNumber === paceNumber) {
-      const scoreText = subject.lastCompleted.testScore !== null ? ` · ${subject.lastCompleted.testScore}%` : ''
-      return {
-        tone: 'warning' as const,
-        text: `Already completed ${formatShortDate(subject.lastCompleted.completedOn, today)}${scoreText} — saving updates that record`
-      }
-    }
-    return { tone: 'neutral' as const, text: 'New record' }
+  // Only say something when saving would surprise: the PACE is already recorded as completed.
+  const overwriteWarning = (() => {
+    if (!subject || !paceNumber || subject.lastCompleted?.paceNumber !== paceNumber) return null
+    const previous = subject.lastCompleted.testScore !== null ? ` with ${subject.lastCompleted.testScore}%` : ''
+    return `Already completed ${formatShortDate(subject.lastCompleted.completedOn, today)}${previous}. Saving updates that record.`
   })()
 
   function validate(): Record<string, string> {
@@ -128,10 +121,10 @@ export function LogProgressDialog({
     if (!student) next.studentId = 'Choose a student.'
     else if (!subject) next.subjectId = 'Choose a subject.'
     if (!paceNumber || paceNumber < 1) next.paceNumber = 'Enter the PACE number.'
-    if (status === 'completed' && score !== '' && (!Number.isInteger(scoreNumber) || scoreNumber! < 0 || scoreNumber! > 100)) {
+    if (happened === 'completed' && score !== '' && (!Number.isInteger(scoreNumber) || scoreNumber! < 0 || scoreNumber! > 100)) {
       next.testScore = 'Scores run from 0 to 100.'
     }
-    if (status !== 'not_started' && (!date || date > today)) next.date = 'Choose a date that isn’t in the future.'
+    if (!date || date > today) next.date = 'Choose a date that isn’t in the future.'
     return next
   }
 
@@ -140,20 +133,22 @@ export function LogProgressDialog({
     if (pending) return
     const found = validate()
     setErrors(found)
+    if (found.date) setShowDate(true)
     if (Object.keys(found).length) return
     startTransition(async () => {
       const response = await logProgress({
         studentId: student!.id,
         subjectId: subject!.subjectId,
         paceNumber: paceNumber!,
-        status,
-        testScore: status === 'completed' ? scoreNumber : null,
-        date: status === 'not_started' ? null : date,
+        status: happened,
+        testScore: happened === 'completed' ? scoreNumber : null,
+        date,
         notes: showNotes ? notes : undefined
       })
       if (response.ok) {
         setSaved(response.data)
       } else {
+        if (response.field === 'date') setShowDate(true)
         setErrors({ [response.field ?? '_form']: response.error })
       }
     })
@@ -166,8 +161,9 @@ export function LogProgressDialog({
     setScore('')
     setNotes('')
     setShowNotes(false)
-    setStatus('completed')
+    setHappened('completed')
     setDate(today)
+    setShowDate(false)
   }
 
   function startNext() {
@@ -185,8 +181,7 @@ export function LogProgressDialog({
   }
 
   if (saved) {
-    const verb =
-      saved.status === 'completed' ? 'completed' : saved.status === 'active' ? 'started' : 'marked not started'
+    const verb = saved.status === 'completed' ? 'completed' : saved.status === 'active' ? 'started' : 'marked not started'
     return (
       <Dialog open={open} onClose={onClose} title="Progress saved" size="md" locked={starting}>
         <div className={styles.saved} role="status">
@@ -204,14 +199,15 @@ export function LogProgressDialog({
               ) : null}
             </p>
             <p className={styles.savedMeta}>
-              {saved.studentName} · {saved.changed ? 'Dashboard, profile and records are updated.' : 'Nothing changed — the record already matched.'}
+              {saved.studentName}
+              {saved.changed ? '' : ' · nothing changed, the record already matched'}
             </p>
           </div>
         </div>
         {saved.nextPace ? (
           <div className={styles.nextPace}>
             <p>
-              Next up in {saved.subjectName}: <span className="mono">{saved.nextPace}</span>
+              Next in {saved.subjectName}: <span className="mono">{saved.nextPace}</span>
             </p>
             <Button variant="primary" icon={Play} onClick={startNext} loading={starting} autoFocus>
               Start {saved.nextPace}
@@ -230,7 +226,21 @@ export function LogProgressDialog({
     )
   }
 
+  if (mode === 'type') {
+    return (
+      <Dialog open={open} onClose={onClose} title="Log progress" description="Say what happened. You’ll check it before anything is saved." size="md" fullOnMobile>
+        <div className={styles.typeMode}>
+          <AssistantComposer bare autoFocus placeholder="e.g. “Gabriel finished Math 1084 with 94%”" onSaved={onClose} onNavigated={onClose} />
+          <button type="button" className={styles.switchMode} onClick={() => setMode('form')}>
+            Use the form instead
+          </button>
+        </div>
+      </Dialog>
+    )
+  }
+
   const useChips = roster.length <= 8
+  const dateWord = happened === 'completed' ? 'Completed' : 'Started'
 
   return (
     <Dialog
@@ -241,12 +251,10 @@ export function LogProgressDialog({
       fullOnMobile
       locked={pending}
       footerStart={
-        <span className={styles.hint}>
-          <Kbd>
-            <CornerDownLeft size={11} strokeWidth={2} aria-hidden />
-          </Kbd>{' '}
-          to save
-        </span>
+        <button type="button" className={styles.switchMode} onClick={() => setMode('type')}>
+          <Sparkles aria-hidden strokeWidth={1.75} />
+          Type it instead
+        </button>
       }
       footer={
         <>
@@ -254,7 +262,7 @@ export function LogProgressDialog({
             Cancel
           </Button>
           <Button variant="primary" type="submit" form="log-progress-form" loading={pending}>
-            Save progress
+            Save
           </Button>
         </>
       }
@@ -319,7 +327,7 @@ export function LogProgressDialog({
                 }))}
               />
             ) : (
-              <p className={styles.placeholder}>{student.firstName} has no subjects yet. Add one from their profile.</p>
+              <p className={styles.placeholder}>{student.firstName} has no subjects yet. Add one from their page.</p>
             )
           ) : (
             <p className={styles.placeholder}>Choose a student first.</p>
@@ -328,17 +336,12 @@ export function LogProgressDialog({
         </div>
 
         <div className={styles.row}>
-          <Field
-            label="PACE"
-            error={errors.paceNumber}
-            className={styles.paceField}
-            aside={level ? `Level ${level}` : undefined}
-          >
+          <Field label="PACE" error={errors.paceNumber} aside={level ? `Level ${level}` : undefined}>
             {(p) => (
               <Input
                 {...p}
                 ref={paceRef}
-                data-autofocus={initialSubject && status !== 'completed' ? true : undefined}
+                data-autofocus={initialSubject && happened !== 'completed' ? true : undefined}
                 className="mono"
                 inputMode="numeric"
                 autoComplete="off"
@@ -350,30 +353,22 @@ export function LogProgressDialog({
             )}
           </Field>
           <div className={styles.group}>
-            <span className={styles.groupLabel}>Status</span>
-            <ChoiceGroup
-              label="Status"
-              variant="segmented"
-              block
-              value={status}
-              onChange={setStatus}
-              options={STATUS_OPTIONS}
-            />
+            <span className={styles.groupLabel}>What happened?</span>
+            <ChoiceGroup label="What happened?" variant="segmented" block value={happened} onChange={setHappened} options={HAPPENED_OPTIONS} />
           </div>
         </div>
-        {recordContext ? (
-          <p className={cx(styles.context, recordContext.tone === 'warning' && styles.contextWarning)}>{recordContext.text}</p>
-        ) : null}
+        {overwriteWarning ? <p className={styles.warning}>{overwriteWarning}</p> : null}
 
-        <div className={styles.row}>
-          {status === 'completed' ? (
+        {happened === 'completed' ? (
+          <div className={styles.row}>
             <Field
               label="Test score"
+              optional
               error={errors.testScore}
               hint={
-                scoreNumber !== null && scoreNumber < household.passMark && score !== ''
-                  ? `Below the ${household.passMark}% pass mark — it will be flagged for review.`
-                  : `Pass mark ${household.passMark}%. Leave blank if there’s no score.`
+                scoreNumber !== null && score !== '' && scoreNumber < household.passMark
+                  ? `Below the ${household.passMark}% pass mark — it will show as needing a look.`
+                  : undefined
               }
             >
               {(p) => (
@@ -391,12 +386,13 @@ export function LogProgressDialog({
                 />
               )}
             </Field>
-          ) : (
-            <div />
-          )}
-          {status !== 'not_started' ? (
+          </div>
+        ) : null}
+
+        {showDate ? (
+          <div className={styles.row}>
             <Field
-              label={status === 'completed' ? 'Completed on' : 'Started on'}
+              label={`${dateWord} on`}
               error={errors.date}
               aside={
                 <span className={styles.quickDates}>
@@ -415,18 +411,18 @@ export function LogProgressDialog({
             >
               {(p) => <Input {...p} type="date" value={date} max={today} onChange={(e) => setDate(e.target.value)} />}
             </Field>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
 
         {showNotes ? (
-          <Field label="Notes" optional>
+          <Field label="Note" optional>
             {(p) => (
               <Textarea
                 {...p}
                 value={notes}
                 rows={3}
                 maxLength={2000}
-                placeholder="Anything worth remembering — retest planned, struggled with fractions…"
+                placeholder="Anything worth remembering — a retest planned, a tricky section…"
                 onChange={(e) => setNotes(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) e.currentTarget.form?.requestSubmit()
@@ -434,14 +430,28 @@ export function LogProgressDialog({
               />
             )}
           </Field>
-        ) : (
-          <button type="button" className={styles.addNote} onClick={() => setShowNotes(true)}>
-            <NotebookPen aria-hidden strokeWidth={1.75} />
-            Add a note
-          </button>
-        )}
+        ) : null}
+
+        {!showDate || !showNotes ? (
+          <p className={styles.extras}>
+            {!showDate ? (
+              <>
+                <span>{dateWord} today</span>
+                <button type="button" className={styles.inlineLink} onClick={() => setShowDate(true)}>
+                  Change date
+                </button>
+              </>
+            ) : null}
+            {!showNotes ? (
+              <button type="button" className={styles.addNote} onClick={() => setShowNotes(true)}>
+                <NotebookPen aria-hidden strokeWidth={1.75} />
+                Add a note
+              </button>
+            ) : null}
+          </p>
+        ) : null}
         <span className="visually-hidden" aria-live="polite">
-          {student && subject ? `${student.firstName}, ${subject.subjectName}, ${PACE_STATUS_LABEL[status]}` : ''}
+          {student && subject ? `${student.firstName}, ${subject.subjectName}, ${happened === 'completed' ? 'completed' : 'started'}` : ''}
         </span>
       </form>
     </Dialog>

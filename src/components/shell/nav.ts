@@ -1,4 +1,4 @@
-import { ChartNoAxesColumn, Files, House, ScrollText, Settings, Sparkles, Users, type LucideIcon } from 'lucide-react'
+import { Files, House, ScrollText, Users, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   href: string
@@ -6,24 +6,12 @@ export interface NavItem {
   icon: LucideIcon
 }
 
-export const NAV_GROUPS: Array<{ label: string; items: NavItem[] }> = [
-  { label: 'Overview', items: [{ href: '/home', label: 'Home', icon: House }] },
-  {
-    label: 'Manage',
-    items: [
-      { href: '/students', label: 'Students', icon: Users },
-      { href: '/progress', label: 'Progress', icon: ChartNoAxesColumn },
-      { href: '/records', label: 'Records', icon: Files }
-    ]
-  },
-  {
-    label: 'Tools',
-    items: [
-      { href: '/assistant', label: 'AI Assistant', icon: Sparkles },
-      { href: '/reports', label: 'Reports', icon: ScrollText }
-    ]
-  },
-  { label: 'System', items: [{ href: '/settings', label: 'Settings', icon: Settings }] }
+/** The whole mental model: four places. Settings and the account live quietly at the bottom. */
+export const NAV_ITEMS: NavItem[] = [
+  { href: '/home', label: 'Home', icon: House },
+  { href: '/students', label: 'Students', icon: Users },
+  { href: '/records', label: 'Records', icon: Files },
+  { href: '/reports', label: 'Reports', icon: ScrollText }
 ]
 
 export function isActive(pathname: string, href: string): boolean {
