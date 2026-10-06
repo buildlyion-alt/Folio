@@ -12,11 +12,12 @@ const PUBLIC_PATHS = ['/sign-in', '/sign-up']
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   const token = request.cookies.get(SESSION_COOKIE)?.value
-  const isPublic = PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+  // The root is the public landing page; it matches exactly so it can't open up the app.
+  const isPublic = pathname === '/' || PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`))
 
   if (!token && !isPublic) {
     const signIn = new URL('/sign-in', request.url)
-    if (pathname !== '/') signIn.searchParams.set('next', `${pathname}${search}`)
+    signIn.searchParams.set('next', `${pathname}${search}`)
     return NextResponse.redirect(signIn)
   }
 
