@@ -1,0 +1,1018 @@
+/*
+ * Product previews. Each preview carries the app's light-theme tokens (src/styles/tokens.css)
+ * and its type, so it shows Folio exactly as a parent sees it, whatever theme the visitor's
+ * device prefers.
+ */
+
+.app {
+  --bg-app: #f0f9f4;
+  --surface-1: #ffffff;
+  --surface-2: #f5faf7;
+  --surface-3: #ebf3ed;
+  --text-1: #0c110b;
+  --text-2: #3f4d42;
+  --text-3: #5b695e;
+  --border: #dde8df;
+  --border-subtle: #e8f0ea;
+  --border-strong: #c7d6ca;
+  --field-border: #c2d2c5;
+  --selected: #e3f0e5;
+  --signal: #4cc264;
+  --on-signal: #0c110b;
+  --signal-text: #1e7b37;
+  --signal-muted: #e2f4e6;
+  --warning-mark: #b97800;
+  --sidebar-bg: #0c110b;
+  --sidebar-text-1: #eef5ef;
+  --sidebar-text-2: #a3b4a6;
+  --sidebar-active: #1c2b1f;
+  --sidebar-field: rgba(238, 245, 239, 0.05);
+
+  color-scheme: light;
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  user-select: none;
+}
+
+.app svg {
+  width: 16px;
+  height: 16px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shared bits ------------------------------------------------------------------------------ */
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 999px;
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+.sm {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+
+.xs {
+  width: 22px;
+  height: 22px;
+  font-size: 10px;
+}
+
+.tone0 {
+  background: #dcebdf;
+}
+
+.tone1 {
+  background: #e5efdc;
+}
+
+.tone2 {
+  background: #d6e8e2;
+}
+
+.tone3 {
+  background: #e4ece6;
+}
+
+.flag {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--warning-mark);
+  flex-shrink: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.btnPrimary {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+.btnSecondary {
+  background: var(--surface-1);
+  border-color: var(--border-strong);
+}
+
+.btnGhost {
+  color: var(--text-2);
+}
+
+.btnBlock {
+  width: 100%;
+  height: 40px;
+}
+
+/* Browser window ----------------------------------------------------------------------------- */
+
+.window {
+  overflow: hidden;
+  border: 1px solid var(--window-line, #d5ddd7);
+  border-radius: 14px;
+  background: var(--bg-app);
+}
+
+.chrome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-1);
+}
+
+.lights {
+  display: flex;
+  gap: 6px;
+}
+
+.lights span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #dfe6e1;
+}
+
+.chromeTitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.appBody {
+  display: grid;
+  grid-template-columns: 196px minmax(0, 1fr);
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 18px 12px;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text-1);
+}
+
+.railBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px 18px;
+}
+
+.railBrandText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.railWord {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.railHousehold {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--sidebar-text-2);
+  white-space: nowrap;
+}
+
+.railSearch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  margin: 10px 0 14px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: var(--sidebar-field);
+  color: var(--sidebar-text-2);
+}
+
+.railItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: var(--sidebar-text-2);
+  font-weight: 500;
+}
+
+.railItemActive {
+  background: var(--sidebar-active);
+  color: var(--sidebar-text-1);
+}
+
+.railItemActive svg {
+  color: var(--signal);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  padding: 26px 28px 30px;
+}
+
+.homeHead {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.greeting {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 20px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.summary strong {
+  font-weight: 600;
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--field-border);
+  border-radius: 10px;
+  background: var(--surface-1);
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.composer span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.composer svg {
+  color: var(--signal-text);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: -6px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sectionHint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 14px;
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--text-3);
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.surface {
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--surface-1);
+}
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.matrix thead th {
+  height: 40px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.matrix tbody tr + tr > * {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.matrix td,
+.matrix tbody th {
+  height: 54px;
+  padding: 0 2px;
+  text-align: left;
+  font-weight: 400;
+}
+
+.matrix .nameCol {
+  padding-left: 18px;
+}
+
+.student {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 7px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* The cell the parent just selected: the hover wash plus the app's focus ring. */
+.paceActive {
+  background: var(--surface-3);
+  box-shadow: 0 0 0 2px var(--signal-text);
+}
+
+.weekCol {
+  padding-right: 18px !important;
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dialogs ------------------------------------------------------------------------------------ */
+
+.dialog {
+  border-radius: 12px;
+  background: var(--surface-1);
+  box-shadow:
+    0 24px 64px rgba(12, 17, 11, 0.18),
+    0 2px 8px rgba(12, 17, 11, 0.08);
+}
+
+.dialogTitle {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.savedDialog {
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  padding: 20px;
+}
+
+.saved {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 0 18px;
+}
+
+.savedMark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--signal);
+  color: var(--on-signal);
+  flex-shrink: 0;
+}
+
+.savedText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 4px;
+}
+
+.savedTitle {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.savedMeta {
+  color: var(--text-2);
+}
+
+.nextPace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.savedActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.logDialog {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 500px;
+  padding: 22px 22px 0;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.groupLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.chip .avatar {
+  margin-left: -4px;
+}
+
+.chipOn {
+  border-color: var(--signal-text);
+  background: var(--signal-muted);
+  color: var(--text-1);
+  box-shadow: inset 0 0 0 1px var(--signal-text);
+}
+
+.chipMeta {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--text-3);
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fieldAside {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.inputFocus {
+  border-color: var(--signal-text);
+  box-shadow: 0 0 0 1px var(--signal-text);
+}
+
+.suffix {
+  color: var(--text-3);
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 38px;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--surface-3);
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.segmented span {
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+}
+
+.segmented .segmentOn {
+  background: var(--surface-1);
+  color: var(--text-1);
+  box-shadow: 0 1px 2px rgba(12, 17, 11, 0.08);
+}
+
+.dialogFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 4px -22px 0;
+  padding: 14px 22px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.switchMode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--signal-text);
+  font-weight: 500;
+}
+
+.footActions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Phone ---------------------------------------------------------------------------------------- */
+
+.phone {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 600px;
+  overflow: hidden;
+  border: 8px solid #101211;
+  border-radius: 40px;
+  background: var(--bg-app);
+}
+
+.phoneTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 10px 16px 0;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.phoneHousehold {
+  flex: 1;
+  font-weight: 600;
+}
+
+.phoneContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 14px 0;
+  overflow: hidden;
+}
+
+.phoneGreeting {
+  font-size: 21px;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.phoneSummary {
+  color: var(--text-2);
+}
+
+.phoneSummary strong {
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.blocks {
+  margin-top: 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--surface-1);
+}
+
+.block {
+  padding: 12px;
+}
+
+.block + .block {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.blockHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.blockName {
+  font-weight: 600;
+}
+
+.blockWeek {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.blockGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.blockCell {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 50px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.blockSubject {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tabbar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
+  height: 66px;
+  padding: 0 4px 10px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+}
+
+.tab,
+.tabLog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.tabOn {
+  color: var(--text-1);
+}
+
+.tabLogIcon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+/* Assistant ---------------------------------------------------------------------------------- */
+
+.assistant {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.composerFilled {
+  color: var(--text-1);
+  white-space: normal;
+  padding: 12px 14px;
+  align-items: flex-start;
+}
+
+.composerFilled svg {
+  margin-top: 2px;
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--surface-1);
+}
+
+.reviewHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.reviewIcon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--signal-muted);
+  color: var(--signal-text);
+  flex-shrink: 0;
+}
+
+.reviewTitles {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewTitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.reviewSub {
+  color: var(--text-2);
+}
+
+.change {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.changeBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.changeName {
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.changeFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
+.changeFacts > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.factLabel {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.reviewActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Record history ------------------------------------------------------------------------------ */
+
+.historyCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 12px;
+  background: var(--surface-1);
+}
+
+.historyHead {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.historyTitle {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.historyMeta {
+  color: var(--text-2);
+}
+
+.historyFacts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 14px 0;
+  border-block: 1px solid var(--border-subtle);
+}
+
+.historyFacts dt {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.historyFacts dd {
+  font-size: 15px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.historyLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  margin-bottom: -6px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.timeline li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.timelineDot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--signal);
+  flex-shrink: 0;
+}
+
+.timeline li + li .timelineDot {
+  background: var(--border-strong);
+}
+
+.timelineText {
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineMeta {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* Narrow windows: the app drops its rail below 960px, and so does the preview. ---------------- */
+
+@media (max-width: 1080px) {
+  .appBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rail {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .summaryWide {
+    display: none;
+  }
+
+  .content {
+    padding: 20px 18px 22px;
+  }
+
+  .composer {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .logDialog {
+    padding: 18px 16px 0;
+    gap: 16px;
+  }
+
+  .dialogFoot {
+    margin: 4px -16px 0;
+    padding: 12px 16px;
+  }
+
+  .switchMode {
+    display: none;
+  }
+
+  .savedDialog {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .savedActions .btnSecondary {
+    display: none;
+  }
+
+  .historyCard {
+    padding: 18px;
+  }
+}
