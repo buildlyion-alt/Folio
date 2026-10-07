@@ -986,6 +986,11 @@
   .composer {
     display: none;
   }
+
+  /* The subject columns run past a phone's width; fade the cut edge so it reads as more to see. */
+  .surface {
+    mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
+  }
 }
 
 @media (max-width: 480px) {

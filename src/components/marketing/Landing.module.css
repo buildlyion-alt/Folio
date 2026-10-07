@@ -531,7 +531,7 @@
   z-index: 1;
   display: flex;
   justify-content: center;
-  margin-top: -64px;
+  margin-top: 16px;
 }
 
 .heroDialog > * {
@@ -558,19 +558,6 @@
 
   .heroDialog {
     bottom: -40px;
-  }
-}
-
-/* On phones the window keeps its desktop width and is cropped, so it still reads as a desktop. */
-@media (max-width: 719px) {
-  .heroWindow {
-    max-height: 360px;
-    overflow: hidden;
-    border-radius: 14px;
-  }
-
-  .heroWindow > * {
-    width: 640px;
   }
 }
 
